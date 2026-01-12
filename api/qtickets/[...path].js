@@ -17,17 +17,15 @@ export default async function handler(req, res) {
 
   try {
     // Get the path after /api/qtickets/
-    const { path } = req.query;
-    const apiPath = Array.isArray(path) ? path.join('/') : path;
+    const { path, ...queryParams } = req.query;
+    const apiPath = Array.isArray(path) ? path.join('/') : (path || 'events');
 
     // Build the full Qtickets URL
     const url = new URL(`${QTICKETS_API_URL}/${apiPath}`);
 
-    // Forward query parameters (except 'path')
-    Object.entries(req.query).forEach(([key, value]) => {
-      if (key !== 'path') {
-        url.searchParams.set(key, value);
-      }
+    // Forward query parameters
+    Object.entries(queryParams).forEach(([key, value]) => {
+      url.searchParams.set(key, value);
     });
 
     console.log('Proxying to:', url.toString());
@@ -38,16 +36,25 @@ export default async function handler(req, res) {
       headers: {
         'Authorization': `Bearer ${QTICKETS_API_KEY}`,
         'Accept': 'application/json',
-        'Content-Type': 'application/json',
       },
       body: req.method !== 'GET' && req.method !== 'HEAD' ? JSON.stringify(req.body) : undefined,
     });
 
-    // Get response data
-    const data = await response.json();
+    const text = await response.text();
 
-    // Return with same status code
-    res.status(response.status).json(data);
+    // Try to parse as JSON
+    try {
+      const data = JSON.parse(text);
+      res.status(response.status).json(data);
+    } catch {
+      // If not JSON, return error with the text
+      console.error('Non-JSON response:', text.substring(0, 200));
+      res.status(500).json({
+        error: 'Invalid response from Qtickets API',
+        status: response.status,
+        preview: text.substring(0, 200)
+      });
+    }
   } catch (error) {
     console.error('Qtickets proxy error:', error);
     res.status(500).json({
