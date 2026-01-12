@@ -2,6 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { MagneticButton } from '../components/MagneticButton';
 import logo from '../assets/logo.png';
+import heroBg from '../assets/hero_bg.jpg';
 
 
 export const Hero = () => {
@@ -13,7 +14,7 @@ export const Hero = () => {
             justifyContent: 'center',
             position: 'relative',
             overflow: 'hidden',
-            backgroundImage: `url("/src/assets/hero_bg.jpg")`,
+            backgroundImage: `url(${heroBg})`,
             backgroundSize: 'cover',
             backgroundPosition: 'center',
         }}>

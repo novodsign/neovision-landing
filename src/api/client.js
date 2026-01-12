@@ -4,11 +4,11 @@
 const QTICKETS_API_KEY = 'b2XdRH8Uxj1vCFb7lKKQZHTLWlCUNCZ1';
 
 // In development, use Vite proxy to bypass CORS
-// In production, use Vercel serverless function to proxy API requests
+// In production, use Yandex Cloud Function to proxy API requests
 const IS_DEV = import.meta.env.DEV;
-const QTICKETS_API_URL = IS_DEV
-  ? '/qtickets-api'  // Vite proxy handles auth headers
-  : '/api/qtickets'; // Vercel serverless function
+
+// Yandex Cloud Function URL for production
+const YANDEX_FUNCTION_URL = 'https://functions.yandexcloud.net/d4ebrrm84ur5b2j9ojie';
 
 // API mode: 'direct' (Qtickets), 'serverless' (Yandex), or 'backend' (local)
 const API_MODE = import.meta.env.VITE_API_MODE || 'direct';
@@ -25,15 +25,25 @@ class ApiError extends Error {
 
 // Direct Qtickets API request
 async function qticketsRequest(endpoint) {
-  const url = `${QTICKETS_API_URL}${endpoint}`;
+  let url;
+  let headers;
 
-  // In development, Vite proxy handles auth headers
-  const headers = IS_DEV
-    ? { 'Accept': 'application/json' }
-    : {
-        'Authorization': `Bearer ${QTICKETS_API_KEY}`,
-        'Accept': 'application/json',
-      };
+  if (IS_DEV) {
+    // Development: use Vite proxy
+    url = `/qtickets-api${endpoint}`;
+    headers = { 'Accept': 'application/json' };
+  } else {
+    // Production: use Yandex Cloud Function with path as query param
+    // Convert endpoint like "/events?page=1" to "?path=events&page=1"
+    const [path, queryString] = endpoint.split('?');
+    const cleanPath = path.replace(/^\//, ''); // Remove leading slash
+
+    const params = new URLSearchParams(queryString || '');
+    params.set('path', cleanPath);
+
+    url = `${YANDEX_FUNCTION_URL}?${params.toString()}`;
+    headers = { 'Accept': 'application/json' };
+  }
 
   try {
     const response = await fetch(url, { headers });

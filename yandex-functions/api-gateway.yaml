@@ -1,0 +1,78 @@
+openapi: 3.0.0
+info:
+  title: NeoVision API Gateway
+  version: 1.0.0
+
+x-yc-apigateway:
+  cors:
+    allowedOrigins:
+      - '*'
+    allowedMethods:
+      - GET
+      - POST
+      - OPTIONS
+    allowedHeaders:
+      - Content-Type
+      - Authorization
+    maxAge: 86400
+
+paths:
+  /api/events:
+    get:
+      summary: List all events
+      x-yc-apigateway-integration:
+        type: cloud_functions
+        function_id: ${QTICKETS_FUNCTION_ID}
+        tag: $latest
+        service_account_id: ${SERVICE_ACCOUNT_ID}
+    options:
+      summary: CORS preflight
+      x-yc-apigateway-integration:
+        type: dummy
+        http_code: 200
+        content:
+          'application/json': '{}'
+
+  /api/events/upcoming:
+    get:
+      summary: Get upcoming events
+      parameters:
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 4
+      x-yc-apigateway-integration:
+        type: cloud_functions
+        function_id: ${QTICKETS_FUNCTION_ID}
+        tag: $latest
+        service_account_id: ${SERVICE_ACCOUNT_ID}
+    options:
+      summary: CORS preflight
+      x-yc-apigateway-integration:
+        type: dummy
+        http_code: 200
+        content:
+          'application/json': '{}'
+
+  /api/events/{eventId}:
+    get:
+      summary: Get event by ID
+      parameters:
+        - name: eventId
+          in: path
+          required: true
+          schema:
+            type: string
+      x-yc-apigateway-integration:
+        type: cloud_functions
+        function_id: ${QTICKETS_FUNCTION_ID}
+        tag: $latest
+        service_account_id: ${SERVICE_ACCOUNT_ID}
+    options:
+      summary: CORS preflight
+      x-yc-apigateway-integration:
+        type: dummy
+        http_code: 200
+        content:
+          'application/json': '{}'
