@@ -341,7 +341,7 @@ export const Events = () => {
 
                             <div style={{ marginTop: 'auto', paddingTop: '0.5rem' }} onClick={(e) => e.stopPropagation()}>
                                 <MagneticButton
-                                    href={evt.ticketUrl || evt.link}
+                                    href={evt.isFeature ? (evt.ticketUrl || evt.link) : evt.link}
                                     variant="secondary"
                                     style={{
                                         fontSize: '0.75rem',
