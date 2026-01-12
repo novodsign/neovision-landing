@@ -13,6 +13,7 @@ import Preloader from './components/Preloader';
 
 import { EventPage } from './pages/EventPage';
 import { EventsArchivePage } from './pages/EventsArchivePage';
+import { ShortUrlRedirect } from './components/ShortUrlRedirect';
 
 const LandingPage = () => (
   <>
@@ -64,6 +65,7 @@ function App() {
           <Route path="/events" element={<EventsArchivePage />} />
           <Route path="/gallery" element={<GalleryPage />} />
           <Route path="/event/:id" element={<EventPage />} />
+          <Route path="/e/:slug" element={<ShortUrlRedirect />} />
         </Routes>
       )}
     </div>

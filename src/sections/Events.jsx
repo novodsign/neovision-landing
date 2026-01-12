@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { MagneticButton } from '../components/MagneticButton';
 import { eventsApi } from '../api/client';
+import { buildEventSlug, countEventsByDate, getSameDateCount } from '../utils/eventSlug';
 
 // Format date from ISO to display format
 function formatDate(dateString) {
@@ -14,20 +15,27 @@ function formatDate(dateString) {
     return `${day}.${month}.${year}`;
 }
 
-// Transform API response to component format
-function transformEvents(apiEvents) {
-    return apiEvents.map(event => ({
-        id: event.id,
-        date: event.nextShow ? formatDate(event.nextShow.date) : '',
-        city: event.city,
-        venue: event.venue,
-        link: `/event/${event.slug || event.id}`,
-        image: event.posterUrl || '/assets/event_poster.png',
-        isFeature: event.isFeatured,
-        title: event.isFeatured ? event.title : undefined,
-        subtitle: event.isFeatured ? 'СЛУШАТЬ МИКСЫ' : undefined,
-        ticketUrl: event.nextShow?.ticketUrl,
-    }));
+// Transform API response to component format with short URLs
+function transformEvents(apiEvents, dateCounts) {
+    return apiEvents.map(event => {
+        const sameDateCount = getSameDateCount(event, dateCounts);
+        const slug = buildEventSlug(event, { sameDateCount });
+        const shortUrl = slug ? `/e/${slug}` : `/event/${event.slug || event.id}`;
+
+        return {
+            id: event.id,
+            date: event.nextShow ? formatDate(event.nextShow.date) : '',
+            city: event.city,
+            venue: event.venue,
+            link: shortUrl,
+            fallbackLink: `/event/${event.slug || event.id}`,
+            image: event.posterUrl || '/assets/event_poster.png',
+            isFeature: event.isFeatured,
+            title: event.isFeatured ? event.title : undefined,
+            subtitle: event.isFeatured ? 'СЛУШАТЬ МИКСЫ' : undefined,
+            ticketUrl: event.nextShow?.ticketUrl,
+        };
+    });
 }
 
 export const Events = () => {
@@ -61,9 +69,12 @@ export const Events = () => {
                     });
 
                 if (mounted) {
+                    // Calculate date counts for short URL generation
+                    const dateCounts = countEventsByDate(allEvents);
+
                     if (upcomingEvents.length > 0) {
                         setHasUpcoming(true);
-                        setEvents(transformEvents(upcomingEvents.slice(0, 4)));
+                        setEvents(transformEvents(upcomingEvents.slice(0, 4), dateCounts));
                     } else {
                         // No upcoming - show most recent past events
                         setHasUpcoming(false);
@@ -74,11 +85,7 @@ export const Events = () => {
                                 return dateB - dateA; // Most recent first (descending)
                             })
                             .slice(0, 4);
-                        console.log('Recent events (sorted most recent first):', recentEvents.map(e => ({
-                            title: e.title,
-                            date: e.shows?.[0]?.date
-                        })));
-                        setEvents(transformEvents(recentEvents));
+                        setEvents(transformEvents(recentEvents, dateCounts));
                     }
                 }
             } catch (error) {

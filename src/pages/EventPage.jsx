@@ -5,6 +5,28 @@ import Navbar from '../components/Navbar';
 import { Footer } from '../sections/Footer';
 import { MagneticButton } from '../components/MagneticButton';
 import { eventsApi } from '../api/client';
+import { toMoscowDate, getEventDate, buildEventSlug } from '../utils/eventSlug';
+
+const MOSCOW_TIMEZONE = 'Europe/Moscow';
+
+/**
+ * Check if an event is archived (past 7 AM Moscow time the next day)
+ */
+function isEventArchived(event) {
+    const eventDate = getEventDate(event);
+    if (!eventDate) return false;
+
+    // Get current time in Moscow
+    const nowMoscow = new Date(new Date().toLocaleString('en-US', { timeZone: MOSCOW_TIMEZONE }));
+
+    // Archive cutoff: 7 AM Moscow time the day after the event
+    const eventMoscow = toMoscowDate(eventDate);
+    const archiveCutoff = new Date(eventMoscow);
+    archiveCutoff.setDate(archiveCutoff.getDate() + 1);
+    archiveCutoff.setHours(7, 0, 0, 0);
+
+    return nowMoscow > archiveCutoff;
+}
 
 // Fallback Mock Data
 const fallbackEventsData = [
@@ -59,6 +81,8 @@ function formatDate(dateString) {
 // Transform API response to component format
 function transformEvent(apiEvent) {
     const nextShow = apiEvent.shows?.[0];
+    const isArchived = isEventArchived(apiEvent);
+
     return {
         id: apiEvent.id,
         slug: apiEvent.slug,
@@ -73,6 +97,8 @@ function transformEvent(apiEvent) {
         title: apiEvent.title,
         ticketUrl: nextShow?.ticketUrl,
         shows: apiEvent.shows || [],
+        isArchived,
+        rawEvent: apiEvent, // Keep raw event for slug generation
     };
 }
 
@@ -202,6 +228,22 @@ export const EventPage = () => {
                     >
                         {/* Header Info */}
                         <div>
+                            {/* Archive Badge */}
+                            {event.isArchived && !event.isFeature && (
+                                <div style={{
+                                    display: 'inline-block',
+                                    background: '#1a1a1a',
+                                    color: '#666',
+                                    padding: '0.5rem 1rem',
+                                    fontSize: '0.75rem',
+                                    letterSpacing: '0.15em',
+                                    marginBottom: '1.5rem',
+                                    border: '1px solid #333'
+                                }}>
+                                    ПРОШЕДШЕЕ СОБЫТИЕ
+                                </div>
+                            )}
+
                             <div style={{
                                 fontFamily: 'var(--font-header)',
                                 fontSize: 'clamp(3rem, 6vw, 5rem)',
@@ -297,12 +339,26 @@ export const EventPage = () => {
 
                         {/* Action */}
                         <div style={{ marginTop: '2rem' }}>
-                            <MagneticButton
-                                href={event.ticketUrl || '#'}
-                                variant="primary"
-                            >
-                                {event.isFeature ? 'СЛУШАТЬ' : 'КУПИТЬ БИЛЕТЫ'}
-                            </MagneticButton>
+                            {event.isArchived && !event.isFeature ? (
+                                <div style={{
+                                    display: 'inline-block',
+                                    padding: '1rem 2rem',
+                                    border: '1px solid #333',
+                                    color: '#666',
+                                    fontFamily: 'var(--font-body)',
+                                    fontSize: '0.9rem',
+                                    letterSpacing: '0.1em'
+                                }}>
+                                    АРХИВ — СОБЫТИЕ ЗАВЕРШЕНО
+                                </div>
+                            ) : (
+                                <MagneticButton
+                                    href={event.ticketUrl || '#'}
+                                    variant="primary"
+                                >
+                                    {event.isFeature ? 'СЛУШАТЬ' : 'КУПИТЬ БИЛЕТЫ'}
+                                </MagneticButton>
+                            )}
                         </div>
 
                     </motion.div>

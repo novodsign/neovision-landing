@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import Navbar from '../components/Navbar';
 import { Footer } from '../sections/Footer';
 import { MagneticButton } from '../components/MagneticButton';
 import { eventsApi } from '../api/client';
+import { buildEventSlug, countEventsByDate, getSameDateCount } from '../utils/eventSlug';
 
 // Format date from ISO to display format
 function formatDate(dateString) {
@@ -69,6 +70,16 @@ export const EventsArchivePage = () => {
             mounted = false;
         };
     }, []);
+
+    // Calculate date counts for short URL generation
+    const dateCounts = useMemo(() => countEventsByDate(events), [events]);
+
+    // Helper to get short URL for an event
+    const getEventUrl = (event) => {
+        const sameDateCount = getSameDateCount(event, dateCounts);
+        const slug = buildEventSlug(event, { sameDateCount });
+        return slug ? `/e/${slug}` : `/event/${event.slug || event.id}`;
+    };
 
     // Sort events
     const sortedEvents = [...events].sort((a, b) => {
@@ -220,7 +231,7 @@ export const EventsArchivePage = () => {
                                     initial={{ opacity: 0, y: 20 }}
                                     animate={{ opacity: 1, y: 0 }}
                                     transition={{ delay: i * 0.05 }}
-                                    onClick={() => navigate(`/event/${event.slug || event.id}`)}
+                                    onClick={() => navigate(getEventUrl(event))}
                                     style={{
                                         display: 'flex',
                                         flexDirection: 'column',
@@ -333,7 +344,7 @@ export const EventsArchivePage = () => {
 
                                         <div style={{ marginTop: 'auto', paddingTop: '0.5rem' }} onClick={(e) => e.stopPropagation()}>
                                             <MagneticButton
-                                                href={`/event/${event.slug || event.id}`}
+                                                href={getEventUrl(event)}
                                                 variant="secondary"
                                                 style={{
                                                     fontSize: '0.75rem',
