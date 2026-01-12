@@ -1,44 +1,102 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { MagneticButton } from '../components/MagneticButton';
+import { eventsApi } from '../api/client';
 
-const events = [
-    {
-        id: 1,
-        date: '21.10.25',
-        city: 'МОСКВА',
-        venue: 'MUTABOR',
-        link: '/event/1',
-        image: '/assets/event_poster.png'
-    },
-    {
-        id: 2,
-        date: '15.11.25',
-        city: 'САНКТ-ПЕТЕРБУРГ',
-        venue: 'BLANK',
-        link: '/event/2',
-        image: '/assets/event_poster.png'
-    },
-    {
-        id: 3,
-        date: '05.12.25',
-        city: 'ЕКАТЕРИНБУРГ',
-        venue: 'TELE-CLUB',
-        link: '/event/3',
-        image: '/assets/event_poster.png'
-    },
-    {
-        // Spacer / Feature Card
-        id: 4,
-        isFeature: true,
-        title: 'NEOVISION SOUND',
-        subtitle: 'СЛУШАТЬ МИКСЫ',
-        link: '/event/4',
-        image: '/assets/event_poster.png' // Utilizing same base for consistency, visual distinctness via CSS
-    }
-];
+// Format date from ISO to display format
+function formatDate(dateString) {
+    if (!dateString) return '';
+    const date = new Date(dateString);
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const year = String(date.getFullYear()).slice(-2);
+    return `${day}.${month}.${year}`;
+}
+
+// Transform API response to component format
+function transformEvents(apiEvents) {
+    return apiEvents.map(event => ({
+        id: event.id,
+        date: event.nextShow ? formatDate(event.nextShow.date) : '',
+        city: event.city,
+        venue: event.venue,
+        link: `/event/${event.slug || event.id}`,
+        image: event.posterUrl || '/assets/event_poster.png',
+        isFeature: event.isFeatured,
+        title: event.isFeatured ? event.title : undefined,
+        subtitle: event.isFeatured ? 'СЛУШАТЬ МИКСЫ' : undefined,
+        ticketUrl: event.nextShow?.ticketUrl,
+    }));
+}
 
 export const Events = () => {
+    const [events, setEvents] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [hasUpcoming, setHasUpcoming] = useState(false);
+    const [totalEvents, setTotalEvents] = useState(0);
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        let mounted = true;
+
+        async function fetchEvents() {
+            try {
+                // Get all events to check totals
+                const allResponse = await eventsApi.list({ per_page: 50 });
+                const allEvents = allResponse?.data || [];
+
+                if (mounted) {
+                    setTotalEvents(allEvents.length);
+                }
+
+                // Check for upcoming events
+                const now = new Date();
+                const upcomingEvents = allEvents
+                    .filter(e => e.shows?.some(s => new Date(s.date) > now))
+                    .sort((a, b) => {
+                        const dateA = a.shows?.[0]?.date ? new Date(a.shows[0].date) : new Date(0);
+                        const dateB = b.shows?.[0]?.date ? new Date(b.shows[0].date) : new Date(0);
+                        return dateA - dateB;
+                    });
+
+                if (mounted) {
+                    if (upcomingEvents.length > 0) {
+                        setHasUpcoming(true);
+                        setEvents(transformEvents(upcomingEvents.slice(0, 4)));
+                    } else {
+                        // No upcoming - show most recent past events
+                        setHasUpcoming(false);
+                        const recentEvents = [...allEvents]
+                            .sort((a, b) => {
+                                const dateA = a.shows?.[0]?.date ? new Date(a.shows[0].date) : new Date(0);
+                                const dateB = b.shows?.[0]?.date ? new Date(b.shows[0].date) : new Date(0);
+                                return dateB - dateA; // Most recent first (descending)
+                            })
+                            .slice(0, 4);
+                        console.log('Recent events (sorted most recent first):', recentEvents.map(e => ({
+                            title: e.title,
+                            date: e.shows?.[0]?.date
+                        })));
+                        setEvents(transformEvents(recentEvents));
+                    }
+                }
+            } catch (error) {
+                console.warn('Failed to fetch events:', error.message);
+            } finally {
+                if (mounted) {
+                    setLoading(false);
+                }
+            }
+        }
+
+        fetchEvents();
+
+        return () => {
+            mounted = false;
+        };
+    }, []);
+
     return (
         <section id="events" className="container" style={{ padding: '120px 4vw' }}>
             <motion.div
@@ -50,7 +108,9 @@ export const Events = () => {
                     justifyContent: 'space-between',
                     alignItems: 'baseline',
                     marginBottom: '3rem',
-                    paddingBottom: '1rem'
+                    paddingBottom: '1rem',
+                    flexWrap: 'wrap',
+                    gap: '1rem'
                 }}
             >
                 <h2 style={{
@@ -58,58 +118,111 @@ export const Events = () => {
                     fontFamily: 'var(--font-header)',
                     margin: 0
                 }}>
-                    СОБЫТИЯ
+                    {hasUpcoming ? 'БЛИЖАЙШИЕ СОБЫТИЯ' : 'ПОСЛЕДНИЕ СОБЫТИЯ'}
                 </h2>
-                <span style={{ fontFamily: 'var(--font-body)', color: '#666' }}>2025 TOUR</span>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '2rem' }}>
+                    {!hasUpcoming && (
+                        <span style={{
+                            fontFamily: 'var(--font-body)',
+                            color: '#666',
+                            fontSize: '0.9rem'
+                        }}>
+                            Нет запланированных событий
+                        </span>
+                    )}
+                    {totalEvents > 4 && (
+                        <Link
+                            to="/events"
+                            style={{
+                                fontFamily: 'var(--font-body)',
+                                color: '#888',
+                                textDecoration: 'none',
+                                fontSize: '0.9rem',
+                                letterSpacing: '0.1em',
+                                borderBottom: '1px solid #444',
+                                paddingBottom: '2px',
+                                transition: 'color 0.3s, border-color 0.3s'
+                            }}
+                            onMouseOver={(e) => {
+                                e.target.style.color = '#fff';
+                                e.target.style.borderColor = '#fff';
+                            }}
+                            onMouseOut={(e) => {
+                                e.target.style.color = '#888';
+                                e.target.style.borderColor = '#444';
+                            }}
+                        >
+                            ВСЕ СОБЫТИЯ ({totalEvents})
+                        </Link>
+                    )}
+                </div>
             </motion.div>
+
+            {loading && events.length === 0 && (
+                <div style={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    minHeight: '300px',
+                    color: '#666'
+                }}>
+                    <div style={{
+                        width: '40px',
+                        height: '40px',
+                        border: '2px solid #333',
+                        borderTopColor: '#fff',
+                        borderRadius: '50%',
+                        animation: 'spin 1s linear infinite'
+                    }} />
+                    <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
+                </div>
+            )}
 
             <div style={{
                 display: 'grid',
-                gridTemplateColumns: 'repeat(4, 1fr)', // Force 4 columns for desktop
+                gridTemplateColumns: 'repeat(4, 1fr)',
                 gap: '2rem',
                 width: '100%',
-                // Removed justifyContent center to align left
             }}>
                 {events.map((evt, i) => (
                     <motion.div
-                        key={i}
+                        key={evt.id || i}
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ delay: i * 0.1 }}
+                        onClick={() => navigate(evt.link)}
                         style={{
                             display: 'flex',
                             flexDirection: 'column',
                             backgroundColor: '#0a0a0a',
                             border: '1px solid #222',
                             overflow: 'hidden',
-                            position: 'relative'
+                            position: 'relative',
+                            opacity: loading ? 0.5 : 1,
+                            transition: 'opacity 0.3s ease',
+                            cursor: 'pointer'
                         }}
                         whileHover={{
                             borderColor: '#444',
-                            // Removed y: -5 to prevent jumping
                             transition: { duration: 0.3 }
                         }}
                     >
                         {/* Image Container */}
                         <div style={{
                             width: '100%',
-                            aspectRatio: '3/4', // Portrait poster format
+                            aspectRatio: '3/4',
                             overflow: 'hidden',
                             position: 'relative',
-                            backgroundColor: '#111' // Placeholder bg
+                            backgroundColor: '#111'
                         }}>
-                            {/* Placeholder generic image since specific assets might not exist perfectly yet,
-                                 or using the referenced one.
-                                 Adding a gradient overlay for text legibility if text was over it,
-                                 but here text is below. */}
                             <div style={{
                                 width: '100%',
                                 height: '100%',
-                                backgroundImage: `url(${evt.image})`, // Reverted to using backgroundImage for cover
+                                backgroundImage: `url(${evt.image})`,
                                 backgroundSize: 'cover',
                                 backgroundPosition: 'center',
-                                filter: evt.isFeature ? 'invert(1) grayscale(100%)' : 'grayscale(100%)', // Distinct look for feature
+                                filter: evt.isFeature ? 'invert(1) grayscale(100%)' : 'grayscale(100%)',
                                 opacity: evt.isFeature ? 0.8 : 1,
                                 transition: 'transform 0.5s ease, filter 0.5s ease'
                             }}
@@ -124,7 +237,6 @@ export const Events = () => {
                                     justifyContent: 'center',
                                     pointerEvents: 'none'
                                 }}>
-                                    {/* Simple "Play" icon overlay for the feature card */}
                                     <div style={{
                                         width: '60px',
                                         height: '60px',
@@ -147,9 +259,9 @@ export const Events = () => {
                             )}
                             <style>{`
                                 .event-row:hover .event-image,
-                                div:hover > div > .event-image { /* Targeting the image on card hover */
+                                div:hover > div > .event-image {
                                     transform: scale(1.05);
-                                    filter: grayscale(0%); /* Restores color on hover */
+                                    filter: grayscale(0%);
                                 }
                              `}</style>
                         </div>
@@ -220,9 +332,9 @@ export const Events = () => {
                                 </>
                             )}
 
-                            <div style={{ marginTop: 'auto', paddingTop: '0.5rem' }}>
+                            <div style={{ marginTop: 'auto', paddingTop: '0.5rem' }} onClick={(e) => e.stopPropagation()}>
                                 <MagneticButton
-                                    href={evt.link}
+                                    href={evt.ticketUrl || evt.link}
                                     variant="secondary"
                                     style={{
                                         fontSize: '0.75rem',

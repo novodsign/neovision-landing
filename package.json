@@ -1,13 +1,15 @@
 {
-  "name": "temp_app",
+  "name": "neovision-frontend",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
+  "description": "NeoVision - Electronic Music Event Platform Frontend",
   "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "setup": "./scripts/setup.sh"
   },
   "dependencies": {
     "framer-motion": "^12.23.25",

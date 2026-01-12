@@ -12,6 +12,7 @@ import { GalleryPage } from './pages/GalleryPage';
 import Preloader from './components/Preloader';
 
 import { EventPage } from './pages/EventPage';
+import { EventsArchivePage } from './pages/EventsArchivePage';
 
 const LandingPage = () => (
   <>
@@ -60,6 +61,7 @@ function App() {
       {!isLoading && (
         <Routes>
           <Route path="/" element={<LandingPage />} />
+          <Route path="/events" element={<EventsArchivePage />} />
           <Route path="/gallery" element={<GalleryPage />} />
           <Route path="/event/:id" element={<EventPage />} />
         </Routes>

@@ -1,12 +1,13 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import Navbar from '../components/Navbar';
 import { Footer } from '../sections/Footer';
 import { MagneticButton } from '../components/MagneticButton';
+import { eventsApi } from '../api/client';
 
-// Mock Data (In a real app, this would come from an API or shared state)
-const eventsData = [
+// Fallback Mock Data
+const fallbackEventsData = [
     {
         id: 1,
         date: '21.10.25',
@@ -45,20 +46,126 @@ const eventsData = [
     }
 ];
 
+// Format date from ISO to display format
+function formatDate(dateString) {
+    if (!dateString) return '';
+    const date = new Date(dateString);
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const year = String(date.getFullYear()).slice(-2);
+    return `${day}.${month}.${year}`;
+}
+
+// Transform API response to component format
+function transformEvent(apiEvent) {
+    const nextShow = apiEvent.shows?.[0];
+    return {
+        id: apiEvent.id,
+        slug: apiEvent.slug,
+        date: nextShow ? formatDate(nextShow.date) : '',
+        city: apiEvent.city,
+        venue: apiEvent.venue,
+        address: apiEvent.address,
+        image: apiEvent.posterUrl || '/assets/event_poster.png',
+        description: apiEvent.description || apiEvent.shortDescription,
+        lineup: apiEvent.lineup?.map(a => a.name) || [],
+        isFeature: apiEvent.isFeatured,
+        title: apiEvent.title,
+        ticketUrl: nextShow?.ticketUrl,
+        shows: apiEvent.shows || [],
+    };
+}
+
 export const EventPage = () => {
     const { id } = useParams();
-    const event = eventsData.find(e => e.id === parseInt(id));
+    const [event, setEvent] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
     useEffect(() => {
         window.scrollTo(0, 0);
     }, [id]);
 
-    if (!event) {
+    useEffect(() => {
+        let mounted = true;
+
+        async function fetchEvent() {
+            setLoading(true);
+            setError(null);
+
+            try {
+                // Try to fetch from API first
+                const apiEvent = await eventsApi.getBySlug(id);
+                if (mounted && apiEvent) {
+                    setEvent(transformEvent(apiEvent));
+                }
+            } catch (err) {
+                // If API fails, try to find in fallback data
+                console.warn('Failed to fetch event from API:', err.message);
+
+                const numericId = parseInt(id);
+                const fallbackEvent = fallbackEventsData.find(e =>
+                    e.id === numericId || e.id === id
+                );
+
+                if (fallbackEvent) {
+                    setEvent(fallbackEvent);
+                } else {
+                    setError('Событие не найдено');
+                }
+            } finally {
+                if (mounted) {
+                    setLoading(false);
+                }
+            }
+        }
+
+        fetchEvent();
+
+        return () => {
+            mounted = false;
+        };
+    }, [id]);
+
+    // Loading state
+    if (loading) {
         return (
             <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', background: '#050505', color: '#fff' }}>
                 <Navbar />
                 <div className="container" style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                    <h1>Событие не найдено</h1>
+                    <div style={{ textAlign: 'center' }}>
+                        <div style={{
+                            width: '40px',
+                            height: '40px',
+                            border: '2px solid #333',
+                            borderTopColor: '#fff',
+                            borderRadius: '50%',
+                            animation: 'spin 1s linear infinite',
+                            margin: '0 auto 1rem'
+                        }} />
+                        <p style={{ color: '#666' }}>Загрузка...</p>
+                    </div>
+                    <style>{`
+                        @keyframes spin {
+                            to { transform: rotate(360deg); }
+                        }
+                    `}</style>
+                </div>
+                <Footer />
+            </div>
+        );
+    }
+
+    // Error state
+    if (error || !event) {
+        return (
+            <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', background: '#050505', color: '#fff' }}>
+                <Navbar />
+                <div className="container" style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column', gap: '2rem' }}>
+                    <h1 style={{ fontFamily: 'var(--font-header)' }}>Событие не найдено</h1>
+                    <Link to="/" style={{ color: '#888', textDecoration: 'none' }}>
+                        &larr; Вернуться на главную
+                    </Link>
                 </div>
                 <Footer />
             </div>
@@ -113,11 +220,18 @@ export const EventPage = () => {
                                     display: 'flex',
                                     gap: '2rem',
                                     borderBottom: '1px solid #333',
-                                    paddingBottom: '2rem'
+                                    paddingBottom: '2rem',
+                                    flexWrap: 'wrap'
                                 }}>
                                     <span>{event.date}</span>
                                     <span style={{ color: '#666' }}>//</span>
                                     <span>{event.venue}</span>
+                                    {event.address && (
+                                        <>
+                                            <span style={{ color: '#666' }}>//</span>
+                                            <span style={{ color: '#666' }}>{event.address}</span>
+                                        </>
+                                    )}
                                 </div>
                             )}
                         </div>
@@ -153,12 +267,39 @@ export const EventPage = () => {
                             </div>
                         )}
 
+                        {/* Show dates (if multiple shows) */}
+                        {!event.isFeature && event.shows && event.shows.length > 1 && (
+                            <div style={{ marginTop: '1rem' }}>
+                                <h3 style={{ fontSize: '1rem', color: '#666', marginBottom: '1rem', letterSpacing: '0.1em' }}>ДАТЫ</h3>
+                                <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
+                                    {event.shows.map((show, idx) => (
+                                        <li key={idx} style={{
+                                            padding: '0.75rem 0',
+                                            borderBottom: '1px solid #222',
+                                            display: 'flex',
+                                            justifyContent: 'space-between',
+                                            alignItems: 'center'
+                                        }}>
+                                            <span>{formatDate(show.date)}</span>
+                                            {show.status === 'SOLD_OUT' && (
+                                                <span style={{ color: '#ff4444', fontSize: '0.8rem' }}>SOLD OUT</span>
+                                            )}
+                                            {show.minPrice && show.status !== 'SOLD_OUT' && (
+                                                <span style={{ color: '#888', fontSize: '0.9rem' }}>
+                                                    от {show.minPrice} ₽
+                                                </span>
+                                            )}
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
+                        )}
+
                         {/* Action */}
                         <div style={{ marginTop: '2rem' }}>
                             <MagneticButton
-                                href="#"
+                                href={event.ticketUrl || '#'}
                                 variant="primary"
-                                style={{}}
                             >
                                 {event.isFeature ? 'СЛУШАТЬ' : 'КУПИТЬ БИЛЕТЫ'}
                             </MagneticButton>
@@ -204,7 +345,7 @@ export const EventPage = () => {
 
                 </div>
 
-                {/* CSS Grid Style Injection for this page specifically */}
+                {/* CSS Grid Style Injection */}
                 <style>{`
                     .event-content-grid {
                         display: grid;
@@ -215,9 +356,6 @@ export const EventPage = () => {
                         .event-content-grid {
                             grid-template-columns: 1fr;
                             gap: 3rem;
-                        }
-                        .event-content-grid > div:nth-child(2) {
-                            order: -1; /* Move poster to top on mobile per design patterns, or keep bottom? Keeping bottom based on Left->Right flow usually mapping to Top->Bottom. But visual impact usually demands poster first. Let's keep strict source order first (Info then Poster) as requested by "Left... Right..." usually implies order. BUT commonly posters are top on mobile. I will keep it bottom for now to match the "Left=Info" priority. Actually, let's just make it standard reading order. Info first. */
                         }
                     }
                 `}</style>
