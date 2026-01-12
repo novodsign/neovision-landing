@@ -3,6 +3,7 @@ import React from 'react';
 export const Footer = () => {
     return (
         <footer id="contact" className="container" style={{
+            width: '100%', // FORCE FULL WIDTH to ensure consistency across pages
             padding: '4rem 4vw',
             display: 'flex',
             justifyContent: 'space-between',
@@ -11,10 +12,15 @@ export const Footer = () => {
             borderTop: '1px solid #333'
         }}>
             <div style={{ opacity: 0.5 }}>&copy; 2025 NeoVision</div>
-            <div style={{ display: 'flex', gap: '1rem' }}>
-                <a href="#">Instagram</a>
-                <a href="#">Telegram</a>
-                <a href="#">Email</a>
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '0.5rem' }}>
+                <div style={{ display: 'flex', gap: '1rem' }}>
+                    <a href="#">Instagram *</a>
+                    <a href="#">Telegram</a>
+                    <a href="#">Email</a>
+                </div>
+                <div style={{ fontSize: '0.6rem', opacity: 0.3, maxWidth: '300px', textAlign: 'right' }}>
+                    * Деятельность Meta (соцсети Facebook и Instagram) запрещена в России как экстремистская.
+                </div>
             </div>
         </footer>
     );

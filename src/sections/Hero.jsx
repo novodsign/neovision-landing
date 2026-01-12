@@ -59,11 +59,11 @@ export const Hero = () => {
                         <p style={{
                             fontSize: '1.5rem',
                             textTransform: 'uppercase',
-                            letterSpacing: '0.2em',
+                            letterSpacing: '0.05em',
                             fontFamily: 'var(--font-header)',
                             fontWeight: 700
                         }}>
-                            Лейбл и Промо
+                            Лейбл и&nbsp;Промо
                         </p>
                         <p style={{
                             fontSize: '1.2rem',
@@ -123,12 +123,20 @@ export const Hero = () => {
                 @media (max-width: 768px) {
                     .hero .container {
                         grid-template-columns: 1fr !important;
-                        text-align: center !important;
-                        justify-items: center;
+                        /* Removed forced center alignment for cleaner text block */
+                        padding-top: 100px !important;
+                        justify-items: start; /* Align grid items to start */
                     }
                     .hero .container > div {
-                        text-align: center !important;
-                        align-items: center !important;
+                        /* Keep left alignment from inline styles */
+                        width: 100%;
+                    }
+                    /* Ensure buttons align left too */
+                    .hero .container > div:last-child {
+                         align-items: flex-start !important;
+                         justify-content: flex-start !important;
+                         padding-bottom: 4rem !important;
+                         flex-direction: row; /* Keep buttons side-by-side or stack? */
                     }
                 }
             `}</style>

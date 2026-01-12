@@ -1,5 +1,29 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { motion } from 'framer-motion';
+
+const NavItem = ({ href, to, children }) => {
+    const Component = to ? Link : 'a';
+    const MotionComponent = motion(Component);
+
+    return (
+        <MotionComponent
+            href={href}
+            to={to}
+            whileHover={{ scale: 1.1, opacity: 0.8 }}
+            whileTap={{ scale: 0.95 }}
+            style={{
+                fontSize: '0.9rem',
+                textTransform: 'uppercase',
+                textDecoration: 'none',
+                color: 'inherit',
+                cursor: 'pointer'
+            }}
+        >
+            {children}
+        </MotionComponent>
+    );
+};
 
 export default function Navbar() {
     return (
@@ -16,14 +40,15 @@ export default function Navbar() {
             mixBlendMode: 'difference',
             color: '#fff'
         }}>
-            <div style={{ fontWeight: '700', textTransform: 'uppercase' }}>NeoVision</div>
+            <Link to="/" style={{ fontWeight: '700', textTransform: 'uppercase', textDecoration: 'none', color: 'inherit' }}>
+                NeoVision
+            </Link>
             <div style={{ display: 'flex', gap: '2rem', flexWrap: 'wrap', justifyContent: 'center' }}>
-                {/* Simple responsive wrap */}
-                <a href="#about" style={{ fontSize: '0.9rem', textTransform: 'uppercase', textDecoration: 'none', color: 'inherit' }}>О нас</a>
-                <Link to="/gallery" style={{ fontSize: '0.9rem', textTransform: 'uppercase', textDecoration: 'none', color: 'inherit' }}>Галерея</Link>
-                <a href="#releases" style={{ fontSize: '0.9rem', textTransform: 'uppercase', textDecoration: 'none', color: 'inherit' }}>Релизы</a>
-                <a href="#events" style={{ fontSize: '0.9rem', textTransform: 'uppercase', textDecoration: 'none', color: 'inherit' }}>События</a>
-                <a href="#contact" style={{ fontSize: '0.9rem', textTransform: 'uppercase', textDecoration: 'none', color: 'inherit' }}>Контакты</a>
+                <NavItem href="#about">О нас</NavItem>
+                <NavItem to="/gallery">Галерея</NavItem>
+                <NavItem href="#releases">Релизы</NavItem>
+                <NavItem href="#events">События</NavItem>
+                <NavItem href="#contact">Контакты</NavItem>
             </div>
         </nav>
     );

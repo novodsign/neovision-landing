@@ -29,7 +29,7 @@ export const Gallery = () => {
                 </Link>
             </div>
 
-            <div style={{
+            <div className="gallery-grid" style={{
                 display: 'grid',
                 gridTemplateColumns: 'repeat(4, 1fr)',
                 gap: '1rem',
@@ -37,6 +37,7 @@ export const Gallery = () => {
                 {images.map((src, i) => (
                     <motion.div
                         key={i}
+                        className="gallery-item"
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true, margin: "-10%" }}
@@ -62,6 +63,17 @@ export const Gallery = () => {
                     </motion.div>
                 ))}
             </div>
+            <style>{`
+                @media (max-width: 768px) {
+                    .gallery-grid {
+                        grid-template-columns: repeat(2, 1fr) !important;
+                    }
+                    /* Hide items after the 4th one on mobile */
+                    .gallery-item:nth-child(n+5) {
+                        display: none !important;
+                    }
+                }
+            `}</style>
         </section>
     );
 };

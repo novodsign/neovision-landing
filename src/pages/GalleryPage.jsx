@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { motion } from 'framer-motion';
 import Navbar from '../components/Navbar';
 import { Footer } from '../sections/Footer';
@@ -18,6 +18,10 @@ import img10 from '../assets/images/img_10.jpg';
 const images = [img1, img2, img3, img4, img5, img6, img7, img8, img9, img10];
 
 export const GalleryPage = () => {
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
+
     return (
         <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
             <Navbar />
@@ -31,7 +35,7 @@ export const GalleryPage = () => {
                     <h1 style={{
                         fontSize: 'clamp(3rem, 8vw, 6rem)',
                         marginBottom: '60px',
-                        textAlign: 'center'
+                        textAlign: 'left' // Changed from center to left
                     }}>
                         Visual Archive
                     </h1>

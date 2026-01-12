@@ -1,0 +1,433 @@
+/* Elevator Container */
+.preloader-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 9999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    /* Simulate elevator darkness */
+    background: var(--color-bg);
+    font-family: 'Space Mono', monospace;
+}
+
+/* ... existing code ... */
+
+/* Minimal Preloader */
+.preloader-minimal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 9999;
+    background: var(--color-bg);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* SVG Blocks Wave Spinner */
+.spinner_zWVm {
+    animation: spinner_5QiW 1.2s linear infinite, spinner_PnZo 1.2s linear infinite;
+    fill: var(--color-white-soft);
+}
+
+.spinner_gfyD {
+    animation: spinner_5QiW 1.2s linear infinite, spinner_4j7o 1.2s linear infinite;
+    animation-delay: .1s;
+    fill: var(--color-white-soft);
+}
+
+.spinner_T5JJ {
+    animation: spinner_5QiW 1.2s linear infinite, spinner_fLK4 1.2s linear infinite;
+    animation-delay: .1s;
+    fill: var(--color-white-soft);
+}
+
+.spinner_E3Wz {
+    animation: spinner_5QiW 1.2s linear infinite, spinner_tDji 1.2s linear infinite;
+    animation-delay: .2s;
+    fill: var(--color-white-soft);
+}
+
+.spinner_g2vs {
+    animation: spinner_5QiW 1.2s linear infinite, spinner_CMiT 1.2s linear infinite;
+    animation-delay: .2s;
+    fill: var(--color-white-soft);
+}
+
+.spinner_ctYB {
+    animation: spinner_5QiW 1.2s linear infinite, spinner_cHKR 1.2s linear infinite;
+    animation-delay: .2s;
+    fill: var(--color-white-soft);
+}
+
+.spinner_BDNj {
+    animation: spinner_5QiW 1.2s linear infinite, spinner_Re6e 1.2s linear infinite;
+    animation-delay: .3s;
+    fill: var(--color-white-soft);
+}
+
+.spinner_rCw3 {
+    animation: spinner_5QiW 1.2s linear infinite, spinner_EJmJ 1.2s linear infinite;
+    animation-delay: .3s;
+    fill: var(--color-white-soft);
+}
+
+.spinner_Rszm {
+    animation: spinner_5QiW 1.2s linear infinite, spinner_YJOP 1.2s linear infinite;
+    animation-delay: .4s;
+    fill: var(--color-white-soft);
+}
+
+/* Shake Animation Class */
+.preloader-container.shaking {
+    animation: elevatorShake 0.1s infinite;
+}
+
+@keyframes elevatorShake {
+    0% {
+        transform: translate(0, 0);
+    }
+
+    25% {
+        transform: translate(1px, 1px);
+    }
+
+    50% {
+        transform: translate(-1px, -1px);
+    }
+
+    75% {
+        transform: translate(-1px, 1px);
+    }
+
+    100% {
+        transform: translate(1px, -1px);
+    }
+}
+
+/* Split Doors */
+.elevator-door {
+    position: absolute;
+    top: 0;
+    width: 50%;
+    height: 100%;
+    /* Dark Brushed Metal Look */
+    background: linear-gradient(90deg, #111, #222 20%, #151515 50%, #222 80%, #111);
+    background-size: 200% 100%;
+    z-index: 10;
+    transition: transform 1.5s cubic-bezier(0.65, 0, 0.35, 1);
+    box-shadow: inset 0 0 50px rgba(0, 0, 0, 0.8);
+    /* Inner shadow for depth */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* Center content horizontally */
+}
+
+.elevator-door.left {
+    left: 0;
+    border-right: 2px solid #000;
+    /* Deep seam */
+}
+
+.elevator-door.right {
+    right: 0;
+    border-left: 2px solid #050505;
+    /* Deep seam */
+}
+
+/* Open State */
+.preloader-container.finished .elevator-door.left {
+    transform: translateX(-100%);
+}
+
+.preloader-container.finished .elevator-door.right {
+    transform: translateX(100%);
+}
+
+/* Safety Windows (Wire Mesh Glass) */
+.safety-window {
+    width: 60px;
+    height: 220px;
+    margin-top: 15vh;
+    /* Responsive placement */
+    background: var(--color-bg);
+    border: 4px solid #2a2a2a;
+    /* Frame */
+    box-shadow: inset 0 0 10px #000;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Wire Mesh Pattern */
+.safety-window::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+        linear-gradient(45deg, #333 25%, transparent 25%, transparent 75%, #333 75%, #333),
+        linear-gradient(45deg, #333 25%, transparent 25%, transparent 75%, #333 75%, #333);
+    background-position: 0 0, 4px 4px;
+    background-size: 8px 8px;
+    opacity: 0.3;
+}
+
+/* Kick Plate (Heavy Bottom Section) */
+.kick-plate {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 15%;
+    background: repeating-linear-gradient(45deg,
+            #151515,
+            #151515 10px,
+            #1a1a1a 10px,
+            #1a1a1a 12px);
+    border-top: 2px solid #000;
+    box-shadow: inset 0 10px 20px rgba(0, 0, 0, 0.8);
+}
+
+/* Control Panel (Centered) */
+.control-panel {
+    position: relative;
+    z-index: 20;
+    background: var(--color-surface);
+    border: 2px solid #333;
+    padding: 2rem;
+    border-radius: 4px;
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.05);
+    /* White shadow */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+    min-width: 250px;
+}
+
+/* Level Indicators */
+.level-list {
+    display: flex;
+    flex-direction: column-reverse;
+    /* -3 is bottom, 0 is top logic, but visually we want list */
+    gap: 0.5rem;
+    width: 100%;
+    align-items: center;
+}
+
+.level-item {
+    font-size: 1.2rem;
+    color: #333;
+    font-weight: bold;
+    width: 100%;
+    text-align: center;
+    padding: 0.25rem 0;
+    border: 1px solid transparent;
+    transition: all 0.3s;
+}
+
+.level-item.active {
+    color: #fff;
+    /* Monochrome White */
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.level-item.passed {
+    color: #444;
+    text-decoration: line-through;
+}
+
+/* Depth/Status Display */
+.status-display {
+    border-top: 1px solid #333;
+    width: 100%;
+    padding-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.status-label {
+    font-size: 0.7rem;
+    color: #666;
+    letter-spacing: 0.2em;
+}
+
+.depth-meter {
+    font-size: 1.5rem;
+    color: #ccc;
+    font-family: 'Space Mono', monospace;
+}
+
+.depth-unit {
+    font-size: 0.8rem;
+    color: #666;
+    margin-left: 4px;
+}
+
+/* Caution Stripe at bottom of doors (Monochrome) */
+.door-stripe {
+    position: absolute;
+    bottom: 20px;
+    left: 10%;
+    width: 80%;
+    height: 4px;
+    background: repeating-linear-gradient(45deg,
+            #222,
+            #222 10px,
+            #444 10px,
+            /* Grey instead of Red */
+            #444 20px);
+    opacity: 0.5;
+}
+
+
+
+@keyframes spinner_5QiW {
+
+    0%,
+    50% {
+        width: 7.33px;
+        height: 7.33px
+    }
+
+    25% {
+        width: 1.33px;
+        height: 1.33px
+    }
+}
+
+@keyframes spinner_PnZo {
+
+    0%,
+    50% {
+        x: 1px;
+        y: 1px
+    }
+
+    25% {
+        x: 4px;
+        y: 4px
+    }
+}
+
+@keyframes spinner_4j7o {
+
+    0%,
+    50% {
+        x: 8.33px;
+        y: 1px
+    }
+
+    25% {
+        x: 11.33px;
+        y: 4px
+    }
+}
+
+@keyframes spinner_fLK4 {
+
+    0%,
+    50% {
+        x: 1px;
+        y: 8.33px
+    }
+
+    25% {
+        x: 4px;
+        y: 11.33px
+    }
+}
+
+@keyframes spinner_tDji {
+
+    0%,
+    50% {
+        x: 15.66px;
+        y: 1px
+    }
+
+    25% {
+        x: 18.66px;
+        y: 4px
+    }
+}
+
+@keyframes spinner_CMiT {
+
+    0%,
+    50% {
+        x: 8.33px;
+        y: 8.33px
+    }
+
+    25% {
+        x: 11.33px;
+        y: 11.33px
+    }
+}
+
+@keyframes spinner_cHKR {
+
+    0%,
+    50% {
+        x: 1px;
+        y: 15.66px
+    }
+
+    25% {
+        x: 4px;
+        y: 18.66px
+    }
+}
+
+@keyframes spinner_Re6e {
+
+    0%,
+    50% {
+        x: 15.66px;
+        y: 8.33px
+    }
+
+    25% {
+        x: 18.66px;
+        y: 11.33px
+    }
+}
+
+@keyframes spinner_EJmJ {
+
+    0%,
+    50% {
+        x: 8.33px;
+        y: 15.66px
+    }
+
+    25% {
+        x: 11.33px;
+        y: 18.66px
+    }
+}
+
+@keyframes spinner_YJOP {
+
+    0%,
+    50% {
+        x: 15.66px;
+        y: 15.66px
+    }
+
+    25% {
+        x: 18.66px;
+        y: 18.66px
+    }
+}

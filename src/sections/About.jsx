@@ -27,80 +27,92 @@ export const About = () => {
                         NeoVision — творческое объединение артистов, продвигающих тёмное звучание электронной музыки.
                     </p>
                     <p style={{ fontSize: '1.25rem', opacity: 0.7, lineHeight: 1.6 }}>
-                        Изначально существующий с 2020 года как фестиваль, NeoVision перерос в музыкальный лейбл и промо-команду. Все участники имеют уникальный звук и собственное, новое видение Российской электроники.
+                        Изначально существующий с&nbsp;2020 года как фестиваль, NeoVision перерос в&nbsp;музыкальный лейбл и&nbsp;промо-команду. Все участники имеют уникальный звук и&nbsp;собственное, новое видение Российской электроники.
                     </p>
                 </div>
 
-                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', justifyContent: 'center', height: '100%' }}>
+                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', justifyContent: 'center', height: '100%', gap: '1rem' }}>
                     <audio ref={audioRef} src={ambientTrack} loop />
 
                     <motion.button
                         onClick={togglePlay}
-                        whileHover={{ scale: 1.02, backgroundColor: 'rgba(255,255,255,0.05)' }}
+                        whileHover={{ backgroundColor: 'rgba(255,255,255,0.05)' }}
                         whileTap={{ scale: 0.98 }}
                         style={{
                             background: 'rgba(255,255,255,0.02)',
                             border: '1px solid rgba(255,255,255,0.2)',
-                            borderRadius: '30px', // Soft rounded corners (pill shape)
-                            padding: '1.5rem 2rem',
+                            borderRadius: '0px', // Sharp corners
+                            padding: '1.5rem',
                             display: 'flex',
                             alignItems: 'center',
                             gap: '1.5rem',
                             cursor: 'pointer',
                             width: 'auto',
-                            minWidth: '240px',
+                            minWidth: '280px',
                             backdropFilter: 'blur(5px)',
-                            boxShadow: '0 4px 20px rgba(0,0,0,0.2)'
+                            position: 'relative'
                         }}
                     >
                         <div style={{
                             width: '40px',
                             height: '40px',
-                            borderRadius: '50%',
-                            background: '#fff',
+                            border: '1px solid #fff', // Outline instead of solid circle
+                            background: 'transparent',
                             display: 'flex',
                             alignItems: 'center',
                             justifyContent: 'center',
-                            color: '#000'
+                            color: '#fff'
                         }}>
-                            {/* Play/Pause Icon */}
                             {isPlaying ? (
-                                <div style={{ width: '12px', height: '12px', background: '#000', borderRadius: '1px' }}></div>
+                                <div style={{ width: '10px', height: '10px', background: '#fff' }}></div>
                             ) : (
                                 <div style={{
                                     width: 0,
                                     height: 0,
-                                    borderTop: '6px solid transparent',
-                                    borderBottom: '6px solid transparent',
-                                    borderLeft: '10px solid #000',
+                                    borderTop: '5px solid transparent',
+                                    borderBottom: '5px solid transparent',
+                                    borderLeft: '8px solid #fff',
                                     marginLeft: '2px'
                                 }}></div>
                             )}
                         </div>
 
                         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: '4px' }}>
-                            <span style={{ fontSize: '0.8rem', letterSpacing: '0.1em', textTransform: 'uppercase', opacity: 0.6 }}>
-                                Ambient Mode
+                            <span style={{ fontSize: '0.9rem', letterSpacing: '0.1em', fontFamily: 'var(--font-header)', textTransform: 'uppercase' }}>
+                                NEOVISION AUDIO
                             </span>
                             <div style={{ display: 'flex', gap: '3px', height: '16px', alignItems: 'center' }}>
-                                {[1, 2, 3, 4, 5, 6].map((i) => (
+                                {[1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
                                     <motion.div
                                         key={i}
                                         animate={{
-                                            height: isPlaying ? ['4px', '16px', '4px'] : '4px',
+                                            height: isPlaying ? ['4px', '12px', '4px'] : '2px',
+                                            opacity: isPlaying ? 1 : 0.5
                                         }}
                                         transition={{
-                                            duration: 0.6,
+                                            duration: 0.5,
                                             repeat: Infinity,
-                                            delay: i * 0.1,
+                                            delay: i * 0.05,
                                             ease: "easeInOut"
                                         }}
-                                        style={{ width: '3px', borderRadius: '2px', backgroundColor: '#fff' }}
+                                        style={{ width: '2px', backgroundColor: '#fff' }}
                                     />
                                 ))}
                             </div>
                         </div>
                     </motion.button>
+
+                    {/* Signature / Hint */}
+                    <span style={{
+                        fontFamily: 'var(--font-body)',
+                        fontSize: '0.7rem',
+                        opacity: 0.5,
+                        textTransform: 'uppercase',
+                        letterSpacing: '0.2em',
+                        textAlign: 'right'
+                    }}>
+                        [ CLICK TO LISTEN ]
+                    </span>
                 </div>
             </div>
         </section>

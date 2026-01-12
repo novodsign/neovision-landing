@@ -55,7 +55,7 @@ export const MagneticButton = ({ children, onClick, href, variant = 'primary', c
                     scale: isHovered ? 2.5 : 0,
                     opacity: isHovered ? 1 : 0
                 }}
-                transition={{ duration: 0.4, ease: "easeInOut" }}
+                transition={{ duration: isHovered ? 0.7 : 0.3, ease: "easeInOut" }}
                 style={{
                     position: 'absolute',
                     top: '50%', // Center initially
@@ -74,7 +74,7 @@ export const MagneticButton = ({ children, onClick, href, variant = 'primary', c
             {/* Content Text - Needs to change color */}
             <motion.span
                 animate={{ color: isHovered ? hoverTextColor : textColor }}
-                transition={{ duration: 0.3 }}
+                transition={{ duration: isHovered ? 0.6 : 0.2 }}
                 style={{
                     position: 'relative',
                     zIndex: 2,
