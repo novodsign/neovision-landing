@@ -4,11 +4,11 @@
 const QTICKETS_API_KEY = 'b2XdRH8Uxj1vCFb7lKKQZHTLWlCUNCZ1';
 
 // In development, use Vite proxy to bypass CORS
-// In production, use direct API or serverless function
+// In production, use Vercel serverless function to proxy API requests
 const IS_DEV = import.meta.env.DEV;
 const QTICKETS_API_URL = IS_DEV
   ? '/qtickets-api'  // Vite proxy handles auth headers
-  : 'https://qtickets.ru/api/rest/v1';
+  : '/api/qtickets'; // Vercel serverless function
 
 // API mode: 'direct' (Qtickets), 'serverless' (Yandex), or 'backend' (local)
 const API_MODE = import.meta.env.VITE_API_MODE || 'direct';
