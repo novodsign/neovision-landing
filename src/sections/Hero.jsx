@@ -71,7 +71,7 @@ export const Hero = () => {
                             letterSpacing: '-0.02em',
                             color: '#eaeaea', // Off-white
                             lineHeight: 1,
-                            marginBottom: '1rem'
+                            marginBottom: '0.2rem' // Reduced gap to Subtitle
                         }}>
                             NEOVISION
                         </h1>
@@ -168,23 +168,23 @@ export const Hero = () => {
                          padding-bottom: 4rem !important;
                          flex-direction: row; /* Keep buttons side-by-side or stack? */
                     }
-                    /* Stack buttons but keep their natural size */
+                    /* Keep buttons side-by-side on mobile */
                     .hero-buttons {
-                        flex-direction: column;
-                        align-items: flex-start !important; /* Start aligned, no stretch */
+                        flex-direction: row !important; /* Force row layout */
+                        flex-wrap: wrap; /* Allow wrapping on very small screens */
+                        align-items: center !important;
                         width: 100%;
                         margin-top: 2rem;
-                        gap: 1rem !important; /* Consistent gap */
+                        gap: 1rem !important;
                     }
-                    /* Ensure buttons are NOT full width */
+                    /* Ensure buttons are auto width */
                     .hero-buttons > * {
                         width: auto !important; 
-                        min-width: 200px; /* Optional minimum width for touch targets */
                         display: inline-flex !important;
                     }
-                    /* Add spacing to label text */
-                    .hero-content-text {
-                        margin-top: 1.5rem !important; /* More breathing room */
+                    /* Add spacing to description text to separate from subtitle */
+                    .hero-content-text p:last-child {
+                        margin-top: 1rem !important; /* Increase gap between Subtitle and Description */
                     }
                 }
             `}</style>
