@@ -95,13 +95,14 @@ export const Hero = () => {
                                 Экспериментальное пространство визуального и звукового искусства.
                             </p>
                         </div>
+                    </div>
 
-                        {/* Mobile Only Buttons Container (Hidden on Desktop via CSS) */}
-                        <div className="hero-buttons mobile-only" style={{ display: 'none' }}>
-                            {/* Will be shown by media query if we didn't use inline display none. 
+                    {/* Mobile Only Buttons Container (Hidden on Desktop via CSS) */}
+                    <div className="hero-buttons mobile-only" style={{ display: 'none' }}>
+                        {/* Will be shown by media query if we didn't use inline display none. 
                              Actually, let's just use the same container and adjust css.
                          */}
-                        </div>
+                    </div>
                 </motion.div>
 
                 {/* Right Side: Buttons (Moves to bottom on mobile) */}
