@@ -85,19 +85,16 @@ export const Hero = () => {
                         }}>
                             Лейбл и&nbsp;Промо
                         </p>
+                        <p style={{
+                            fontSize: '1.1rem',
+                            maxWidth: '500px',
+                            opacity: 0.8,
+                            marginBottom: '2rem',
+                            mixBlendMode: 'difference'
                         }}>
-                        Лейбл и&nbsp;Промо
-                    </p>
-
-                    <p style={{
-                        fontSize: '1.1rem',
-                        maxWidth: '500px',
-                        opacity: 0.8,
-                        marginBottom: '2rem',
-                        mixBlendMode: 'difference'
-                    }}>
-                        Экспериментальное пространство визуального и звукового искусства.
-                    </p>
+                            Экспериментальное пространство визуального и звукового искусства.
+                        </p>
+                    </div>
 
                     {/* Mobile Only Buttons Container (Hidden on Desktop via CSS) */}
                     <div className="hero-buttons mobile-only" style={{ display: 'none' }}>
