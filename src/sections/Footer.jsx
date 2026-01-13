@@ -30,7 +30,7 @@ export const Footer = () => {
             borderTop: '1px solid #333'
         }}>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                <img src={logo} alt="NeoVision" style={{ width: '150px', height: 'auto', filter: 'invert(1)' }} />
+                <img src={logo} alt="NeoVision" style={{ width: '150px', height: 'auto' }} />
                 <div style={{ opacity: 0.5 }}>&copy; 2025 NeoVision</div>
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '0.5rem' }}>
