@@ -113,7 +113,7 @@ export const Events = () => {
                 style={{
                     display: 'flex',
                     justifyContent: 'space-between',
-                    alignItems: 'baseline',
+                    alignItems: 'flex-end',
                     marginBottom: '3rem',
                     paddingBottom: '1rem',
                     flexWrap: 'wrap',
@@ -139,7 +139,7 @@ export const Events = () => {
                         </span>
                     )}
                 </div>
-                <div style={{ marginLeft: 'auto', paddingBottom: '0.5rem' }}>
+                <div style={{ marginLeft: 'auto' }}>
                     {totalEvents > 4 && (
                         <Link
                             to="/events"
