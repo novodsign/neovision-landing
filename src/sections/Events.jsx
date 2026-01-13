@@ -163,200 +163,201 @@ export const Events = () => {
                         )}
                     </div>
                 </div>
+            </div>
 
-                {loading && events.length === 0 && (
-                    <div style={{
-                        display: 'flex',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        minHeight: '300px',
-                        color: '#666'
-                    }}>
-                        <div style={{
-                            width: '40px',
-                            height: '40px',
-                            border: '2px solid #333',
-                            borderTopColor: '#fff',
-                            borderRadius: '50%',
-                            animation: 'spin 1s linear infinite'
-                        }} />
-                        <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
-                    </div>
-                )}
-
+            {loading && events.length === 0 && (
                 <div style={{
-                    display: 'grid',
-                    gridTemplateColumns: 'repeat(4, 1fr)',
-                    gap: '2rem',
-                    width: '100%',
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    minHeight: '300px',
+                    color: '#666'
                 }}>
-                    {events.map((evt, i) => (
-                        <motion.div
-                            key={evt.id || i}
-                            initial={{ opacity: 0, y: 20 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ delay: i * 0.1 }}
-                            onClick={() => navigate(evt.link)}
-                            style={{
-                                display: 'flex',
-                                flexDirection: 'column',
-                                backgroundColor: '#0a0a0a',
-                                border: '1px solid #222',
-                                overflow: 'hidden',
-                                position: 'relative',
-                                opacity: loading ? 0.5 : 1,
-                                transition: 'opacity 0.3s ease',
-                                cursor: 'pointer'
-                            }}
-                            whileHover={{
-                                borderColor: '#444',
-                                transition: { duration: 0.3 }
-                            }}
-                        >
-                            {/* Image Container */}
+                    <div style={{
+                        width: '40px',
+                        height: '40px',
+                        border: '2px solid #333',
+                        borderTopColor: '#fff',
+                        borderRadius: '50%',
+                        animation: 'spin 1s linear infinite'
+                    }} />
+                    <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
+                </div>
+            )}
+
+            <div style={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(4, 1fr)',
+                gap: '2rem',
+                width: '100%',
+            }}>
+                {events.map((evt, i) => (
+                    <motion.div
+                        key={evt.id || i}
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ delay: i * 0.1 }}
+                        onClick={() => navigate(evt.link)}
+                        style={{
+                            display: 'flex',
+                            flexDirection: 'column',
+                            backgroundColor: '#0a0a0a',
+                            border: '1px solid #222',
+                            overflow: 'hidden',
+                            position: 'relative',
+                            opacity: loading ? 0.5 : 1,
+                            transition: 'opacity 0.3s ease',
+                            cursor: 'pointer'
+                        }}
+                        whileHover={{
+                            borderColor: '#444',
+                            transition: { duration: 0.3 }
+                        }}
+                    >
+                        {/* Image Container */}
+                        <div style={{
+                            width: '100%',
+                            aspectRatio: '3/4',
+                            overflow: 'hidden',
+                            position: 'relative',
+                            backgroundColor: '#111'
+                        }}>
                             <div style={{
                                 width: '100%',
-                                aspectRatio: '3/4',
-                                overflow: 'hidden',
-                                position: 'relative',
-                                backgroundColor: '#111'
-                            }}>
+                                height: '100%',
+                                backgroundImage: `url(${evt.image})`,
+                                backgroundSize: 'cover',
+                                backgroundPosition: 'center',
+                                filter: evt.isFeature ? 'invert(1) grayscale(100%)' : 'grayscale(100%)',
+                                opacity: evt.isFeature ? 0.8 : 1,
+                                transition: 'transform 0.5s ease, filter 0.5s ease'
+                            }}
+                                className="event-image"
+                            />
+                            {evt.isFeature && (
                                 <div style={{
-                                    width: '100%',
-                                    height: '100%',
-                                    backgroundImage: `url(${evt.image})`,
-                                    backgroundSize: 'cover',
-                                    backgroundPosition: 'center',
-                                    filter: evt.isFeature ? 'invert(1) grayscale(100%)' : 'grayscale(100%)',
-                                    opacity: evt.isFeature ? 0.8 : 1,
-                                    transition: 'transform 0.5s ease, filter 0.5s ease'
-                                }}
-                                    className="event-image"
-                                />
-                                {evt.isFeature && (
+                                    position: 'absolute',
+                                    inset: 0,
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    pointerEvents: 'none'
+                                }}>
                                     <div style={{
-                                        position: 'absolute',
-                                        inset: 0,
+                                        width: '60px',
+                                        height: '60px',
+                                        border: '2px solid #000',
+                                        borderRadius: '50%',
                                         display: 'flex',
                                         alignItems: 'center',
-                                        justifyContent: 'center',
-                                        pointerEvents: 'none'
+                                        justifyContent: 'center'
                                     }}>
                                         <div style={{
-                                            width: '60px',
-                                            height: '60px',
-                                            border: '2px solid #000',
-                                            borderRadius: '50%',
-                                            display: 'flex',
-                                            alignItems: 'center',
-                                            justifyContent: 'center'
-                                        }}>
-                                            <div style={{
-                                                width: 0,
-                                                height: 0,
-                                                borderTop: '10px solid transparent',
-                                                borderBottom: '10px solid transparent',
-                                                borderLeft: '16px solid #000',
-                                                marginLeft: '4px'
-                                            }} />
-                                        </div>
+                                            width: 0,
+                                            height: 0,
+                                            borderTop: '10px solid transparent',
+                                            borderBottom: '10px solid transparent',
+                                            borderLeft: '16px solid #000',
+                                            marginLeft: '4px'
+                                        }} />
                                     </div>
-                                )}
-                                <style>{`
+                                </div>
+                            )}
+                            <style>{`
                                 .event-row:hover .event-image,
                                 div:hover > div > .event-image {
                                     transform: scale(1.05);
                                     filter: grayscale(0%);
                                 }
                              `}</style>
-                            </div>
+                        </div>
 
-                            {/* Content */}
-                            <div style={{
-                                padding: '1.5rem',
-                                display: 'flex',
-                                flexDirection: 'column',
-                                gap: '1rem',
-                                borderTop: '1px solid #222',
-                                flex: 1
-                            }}>
-                                {!evt.isFeature ? (
-                                    <>
-                                        <div style={{
-                                            display: 'flex',
-                                            justifyContent: 'space-between',
-                                            alignItems: 'center'
-                                        }}>
-                                            <span style={{
-                                                fontFamily: 'var(--font-body)',
-                                                color: '#888',
-                                                fontSize: '0.9rem',
-                                                letterSpacing: '0.05em'
-                                            }}>
-                                                {evt.date}
-                                            </span>
-                                            <span style={{
-                                                fontFamily: 'var(--font-body)',
-                                                color: '#666',
-                                                fontSize: '0.8rem',
-                                                textTransform: 'uppercase'
-                                            }}>
-                                                {evt.venue}
-                                            </span>
-                                        </div>
-
-                                        <h3 style={{
-                                            fontFamily: 'var(--font-header)',
-                                            fontSize: '1.5rem',
-                                            margin: 0,
-                                            lineHeight: 1,
-                                            textTransform: 'uppercase'
-                                        }}>
-                                            {evt.city}
-                                        </h3>
-                                    </>
-                                ) : (
-                                    <>
-                                        <div style={{
+                        {/* Content */}
+                        <div style={{
+                            padding: '1.5rem',
+                            display: 'flex',
+                            flexDirection: 'column',
+                            gap: '1rem',
+                            borderTop: '1px solid #222',
+                            flex: 1
+                        }}>
+                            {!evt.isFeature ? (
+                                <>
+                                    <div style={{
+                                        display: 'flex',
+                                        justifyContent: 'space-between',
+                                        alignItems: 'center'
+                                    }}>
+                                        <span style={{
                                             fontFamily: 'var(--font-body)',
                                             color: '#888',
                                             fontSize: '0.9rem',
                                             letterSpacing: '0.05em'
                                         }}>
-                                            {evt.subtitle}
-                                        </div>
-                                        <h3 style={{
-                                            fontFamily: 'var(--font-header)',
-                                            fontSize: '1.5rem',
-                                            margin: 0,
-                                            lineHeight: 1,
+                                            {evt.date}
+                                        </span>
+                                        <span style={{
+                                            fontFamily: 'var(--font-body)',
+                                            color: '#666',
+                                            fontSize: '0.8rem',
                                             textTransform: 'uppercase'
                                         }}>
-                                            {evt.title}
-                                        </h3>
-                                    </>
-                                )}
+                                            {evt.venue}
+                                        </span>
+                                    </div>
 
-                                <div style={{ marginTop: 'auto', paddingTop: '0.5rem' }} onClick={(e) => e.stopPropagation()}>
-                                    <MagneticButton
-                                        href={evt.isFeature ? (evt.ticketUrl || evt.link) : evt.link}
-                                        variant="secondary"
-                                        style={{
-                                            fontSize: '0.75rem',
-                                            padding: '0.6rem 1rem'
-                                        }}
-                                    >
-                                        {evt.isFeature ? 'СЛУШАТЬ' : 'Подробнее'}
-                                    </MagneticButton>
-                                </div>
+                                    <h3 style={{
+                                        fontFamily: 'var(--font-header)',
+                                        fontSize: '1.5rem',
+                                        margin: 0,
+                                        lineHeight: 1,
+                                        textTransform: 'uppercase'
+                                    }}>
+                                        {evt.city}
+                                    </h3>
+                                </>
+                            ) : (
+                                <>
+                                    <div style={{
+                                        fontFamily: 'var(--font-body)',
+                                        color: '#888',
+                                        fontSize: '0.9rem',
+                                        letterSpacing: '0.05em'
+                                    }}>
+                                        {evt.subtitle}
+                                    </div>
+                                    <h3 style={{
+                                        fontFamily: 'var(--font-header)',
+                                        fontSize: '1.5rem',
+                                        margin: 0,
+                                        lineHeight: 1,
+                                        textTransform: 'uppercase'
+                                    }}>
+                                        {evt.title}
+                                    </h3>
+                                </>
+                            )}
+
+                            <div style={{ marginTop: 'auto', paddingTop: '0.5rem' }} onClick={(e) => e.stopPropagation()}>
+                                <MagneticButton
+                                    href={evt.isFeature ? (evt.ticketUrl || evt.link) : evt.link}
+                                    variant="secondary"
+                                    style={{
+                                        fontSize: '0.75rem',
+                                        padding: '0.6rem 1rem'
+                                    }}
+                                >
+                                    {evt.isFeature ? 'СЛУШАТЬ' : 'Подробнее'}
+                                </MagneticButton>
                             </div>
-                        </motion.div>
-                    ))}
-                </div>
+                        </div>
+                    </motion.div>
+                ))}
+            </div>
 
-                {/* Responsive Grid Fix */}
-                <style>{`
+            {/* Responsive Grid Fix */}
+            <style>{`
                 @media (max-width: 1024px) {
                     #events > div:nth-of-type(2) {
                         grid-template-columns: repeat(2, 1fr) !important;
