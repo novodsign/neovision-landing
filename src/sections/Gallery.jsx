@@ -23,6 +23,7 @@ export const Gallery = () => {
                     fontSize: '1rem',
                     textDecoration: 'underline',
                     textUnderlineOffset: '4px',
+                    textTransform: 'uppercase',
                     opacity: 0.7
                 }}>
                     Посмотреть все

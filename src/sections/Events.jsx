@@ -105,7 +105,7 @@ export const Events = () => {
     }, []);
 
     return (
-        <section id="events" className="container" style={{ padding: '120px 4vw' }}>
+        <section id="events" className="container" style={{ padding: 'clamp(4rem, 8vw, 120px) 4vw' }}>
             <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -127,7 +127,7 @@ export const Events = () => {
                 }}>
                     {hasUpcoming ? 'БЛИЖАЙШИЕ СОБЫТИЯ' : 'ПОСЛЕДНИЕ СОБЫТИЯ'}
                 </h2>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '2rem' }}>
+                <div style={{ display: 'flex', alignItems: 'baseline', gap: '2rem' }}>
                     {!hasUpcoming && (
                         <span style={{
                             fontFamily: 'var(--font-body)',
