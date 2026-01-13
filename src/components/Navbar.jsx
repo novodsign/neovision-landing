@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import logo from '../assets/logo.png';
+import logo from '../assets/logo_vector.svg';
 
 const NavItem = ({ href, to, children, onClick }) => {
     const Component = to ? Link : 'a';
