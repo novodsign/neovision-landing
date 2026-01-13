@@ -1,6 +1,6 @@
 import React from 'react';
 import { useLocation, useNavigate, Link } from 'react-router-dom';
-import logo from '../assets/logo.svg';
+import logo from '../assets/logo.png';
 
 export const Footer = () => {
     const location = useLocation();
