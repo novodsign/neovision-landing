@@ -127,7 +127,7 @@ export const Events = () => {
                 }}>
                     {hasUpcoming ? 'БЛИЖАЙШИЕ СОБЫТИЯ' : 'ПОСЛЕДНИЕ СОБЫТИЯ'}
                 </h2>
-                <div style={{ display: 'flex', alignItems: 'baseline', gap: '2rem' }}>
+                <div style={{ display: 'flex', alignItems: 'baseline', gap: '2rem', marginLeft: 'auto' }}>
                     {!hasUpcoming && (
                         <span style={{
                             fontFamily: 'var(--font-body)',
