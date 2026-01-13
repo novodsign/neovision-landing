@@ -29,12 +29,27 @@ export const Footer = () => {
             marginTop: '4rem',
             borderTop: '1px solid #333'
         }}>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                <img src={logo} alt="NeoVision" style={{ width: '240px', height: 'auto', opacity: 0.5 }} />
+            <div style={{
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '1rem',
+                alignItems: 'flex-start' // Ensure left alignment
+            }}>
+                <img src={logo} alt="NeoVision" style={{
+                    width: 'clamp(150px, 40vw, 240px)', // Responsive width
+                    height: 'auto',
+                    opacity: 0.5
+                }} />
                 <div style={{ opacity: 0.5 }}>&copy; 2025 NeoVision</div>
             </div>
-            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '0.5rem' }}>
-                <div style={{ display: 'flex', gap: '1rem' }}>
+            <div style={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'flex-end',
+                gap: '0.5rem',
+                marginTop: '1rem' // Add space on mobile if wrapped
+            }}>
+                <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', justifyContent: 'flex-end' }}>
                     <a href="#" onClick={(e) => e.preventDefault()} style={{ pointerEvents: 'none', color: '#666', textDecoration: 'none' }}>Instagram *</a>
                     <a href="https://t.me/neovision" target="_blank" rel="noopener noreferrer" style={{ color: 'inherit', textDecoration: 'none' }}>Telegram</a>
                     <a href="mailto:contact@neovision.com" style={{ color: 'inherit', textDecoration: 'none' }}>Email</a>
