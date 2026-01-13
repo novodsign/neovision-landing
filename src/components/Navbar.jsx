@@ -73,6 +73,7 @@ export default function Navbar() {
     ];
 
     return (
+    return (
         <nav style={{
             position: 'fixed',
             top: 0,
@@ -83,16 +84,33 @@ export default function Navbar() {
             justifyContent: 'space-between',
             alignItems: 'center',
             zIndex: 100,
-            mixBlendMode: 'difference',
             color: '#fff'
+            /* Removing mix-blend-mode from container to avoid messing up mobile menu overlay */
         }}>
-            <Link to="/" onClick={() => setIsMenuOpen(false)} style={{ fontWeight: '700', textTransform: 'uppercase', textDecoration: 'none', color: 'inherit', zIndex: 101 }}>
+            <Link
+                to="/"
+                onClick={() => setIsMenuOpen(false)}
+                style={{
+                    fontWeight: '700',
+                    textTransform: 'uppercase',
+                    textDecoration: 'none',
+                    color: 'inherit',
+                    zIndex: 101,
+                    mixBlendMode: 'difference' // Apply blend mode ONLY to logo
+                }}
+            >
                 NeoVision
             </Link>
 
             {/* Desktop Menu */}
             {!isMobile && (
-                <div style={{ display: 'flex', gap: '2rem', flexWrap: 'wrap', justifyContent: 'center' }}>
+                <div style={{
+                    display: 'flex',
+                    gap: '2rem',
+                    flexWrap: 'wrap',
+                    justifyContent: 'center',
+                    mixBlendMode: 'difference' // Apply blend mode ONLY to links
+                }}>
                     {navLinks.map((link, i) => (
                         <NavItem
                             key={i}
@@ -119,7 +137,8 @@ export default function Navbar() {
                         padding: '10px',
                         display: 'flex',
                         flexDirection: 'column',
-                        gap: '6px'
+                        gap: '6px',
+                        mixBlendMode: 'difference' // Apply to hamburger button
                     }}
                 >
                     <motion.div
@@ -150,14 +169,14 @@ export default function Navbar() {
                             left: 0,
                             right: 0,
                             bottom: 0,
-                            background: '#080808',
+                            background: '#080808', // Clean dark background
                             display: 'flex',
                             flexDirection: 'column',
                             justifyContent: 'center',
                             alignItems: 'center',
                             gap: '2rem',
-                            zIndex: 100,
-                            paddingBottom: 'safe-area-inset-bottom' // iPhone safe area
+                            zIndex: 100, // Behind the close button (101)
+                            paddingBottom: 'safe-area-inset-bottom'
                         }}
                     >
                         {navLinks.map((link, i) => {

@@ -65,43 +65,43 @@ export const Hero = () => {
                     transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
                     style={{ textAlign: 'left' }} // Removed maxWidth to match About alignment
                 >
-                    <img src={logo} alt="NeoVision Logo" style={{ maxWidth: '120px', marginBottom: '2rem', filter: 'invert(1)' }} />
-                    <h1 style={{
-                        fontSize: 'clamp(3rem, 10vw, 8rem)',
-                        letterSpacing: '-0.02em',
-                        color: '#eaeaea', // Off-white
-                        lineHeight: 1,
-                        marginBottom: '1rem'
-                    }}>
-                        NEOVISION
-                    </h1>
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-                        <p style={{
-                            fontSize: '1.5rem',
-                            textTransform: 'uppercase',
-                            letterSpacing: '0.05em',
-                            fontFamily: 'var(--font-header)',
-                            fontWeight: 700
+                    <div style={{ marginTop: '2rem' }}> {/* Adjusted spacing since logo is gone */}
+                        <h1 style={{
+                            fontSize: 'clamp(3rem, 10vw, 8rem)',
+                            letterSpacing: '-0.02em',
+                            color: '#eaeaea', // Off-white
+                            lineHeight: 1,
+                            marginBottom: '1rem'
                         }}>
-                            Лейбл и&nbsp;Промо
-                        </p>
-                        <p style={{
-                            fontSize: '1.1rem',
-                            maxWidth: '500px',
-                            opacity: 0.8,
-                            marginBottom: '2rem',
-                            mixBlendMode: 'difference'
-                        }}>
-                            Экспериментальное пространство визуального и звукового искусства.
-                        </p>
-                    </div>
+                            NEOVISION
+                        </h1>
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                            <p style={{
+                                fontSize: '1.5rem',
+                                textTransform: 'uppercase',
+                                letterSpacing: '0.05em',
+                                fontFamily: 'var(--font-header)',
+                                fontWeight: 700
+                            }}>
+                                Лейбл и&nbsp;Промо
+                            </p>
+                            <p style={{
+                                fontSize: '1.1rem',
+                                maxWidth: '500px',
+                                opacity: 0.8,
+                                marginBottom: '2rem',
+                                mixBlendMode: 'difference'
+                            }}>
+                                Экспериментальное пространство визуального и звукового искусства.
+                            </p>
+                        </div>
 
-                    {/* Mobile Only Buttons Container (Hidden on Desktop via CSS) */}
-                    <div className="hero-buttons mobile-only" style={{ display: 'none' }}>
-                        {/* Will be shown by media query if we didn't use inline display none. 
+                        {/* Mobile Only Buttons Container (Hidden on Desktop via CSS) */}
+                        <div className="hero-buttons mobile-only" style={{ display: 'none' }}>
+                            {/* Will be shown by media query if we didn't use inline display none. 
                              Actually, let's just use the same container and adjust css.
                          */}
-                    </div>
+                        </div>
                 </motion.div>
 
                 {/* Right Side: Buttons (Moves to bottom on mobile) */}

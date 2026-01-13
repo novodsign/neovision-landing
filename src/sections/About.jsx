@@ -123,7 +123,7 @@ export const About = () => {
                                             delay: i * 0.05,
                                             ease: "easeInOut"
                                         }}
-                                        style={{ width: '2px', backgroundColor: '#000' }} // Black visualizer bars
+                                        style={{ width: '2px', backgroundColor: '#000' }}
                                     />
                                 ))}
                             </div>
