@@ -89,7 +89,13 @@ export default function Navbar() {
         }}>
             <Link
                 to="/"
-                onClick={() => setIsMenuOpen(false)}
+                onClick={(e) => {
+                    setIsMenuOpen(false);
+                    if (location.pathname === '/') {
+                        e.preventDefault();
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                    }
+                }}
                 style={{
                     zIndex: 101,
                     mixBlendMode: 'difference', // Apply blend mode ONLY to logo
@@ -97,7 +103,7 @@ export default function Navbar() {
                     alignItems: 'center'
                 }}
             >
-                <img src={logo} alt="NeoVision" style={{ width: '150px', height: 'auto', display: 'block' }} />
+                <img src={logo} alt="NeoVision" style={{ height: '24px', width: 'auto', display: 'block' }} />
             </Link>
 
             {/* Desktop Menu */}
