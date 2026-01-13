@@ -164,8 +164,8 @@ export default function Navbar() {
             <AnimatePresence>
                 {isMobile && isMenuOpen && (
                     <motion.div
-                        initial={{ opacity: 0, y: -20 }}
-                        animate={{ opacity: 1, y: 0 }}
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
                         style={{
                             position: 'fixed',
@@ -176,33 +176,46 @@ export default function Navbar() {
                             background: '#080808', // Clean dark background
                             display: 'flex',
                             flexDirection: 'column',
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                            gap: '2rem',
+                            justifyContent: 'flex-start', // Align to top
                             zIndex: 100, // Behind the close button (101)
-                            paddingBottom: 'safe-area-inset-bottom'
+                            padding: '6rem 2rem 2rem 2rem' // Padding for top bar and sides
                         }}
                     >
-                        {navLinks.map((link, i) => {
-                            const Component = link.to ? Link : 'a';
-                            return (
-                                <Component
-                                    key={i}
-                                    href={link.href}
-                                    to={link.to}
-                                    onClick={link.href ? (e) => handleNavClick(e, link.href) : () => setIsMenuOpen(false)}
-                                    style={{
-                                        fontSize: '2rem',
-                                        textTransform: 'uppercase',
-                                        color: '#fff',
-                                        textDecoration: 'none',
-                                        fontFamily: 'var(--font-header)'
-                                    }}
-                                >
-                                    {link.label}
-                                </Component>
-                            );
-                        })}
+                        <div style={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
+                            {navLinks.map((link, i) => {
+                                const Component = link.to ? Link : 'a';
+                                return (
+                                    <Component
+                                        key={i}
+                                        href={link.href}
+                                        to={link.to}
+                                        onClick={link.href ? (e) => handleNavClick(e, link.href) : () => setIsMenuOpen(false)}
+                                        style={{
+                                            fontSize: '1.5rem',
+                                            textTransform: 'uppercase',
+                                            color: '#fff',
+                                            textDecoration: 'none',
+                                            fontFamily: 'var(--font-header)',
+                                            width: '100%',
+                                            display: 'flex',
+                                            justifyContent: 'space-between',
+                                            alignItems: 'baseline',
+                                            borderBottom: '1px solid rgba(255,255,255,0.2)',
+                                            padding: '1.5rem 0'
+                                        }}
+                                    >
+                                        <span>{link.label}</span>
+                                        <span style={{
+                                            fontSize: '1rem',
+                                            opacity: 0.5,
+                                            fontFamily: 'var(--font-body)'
+                                        }}>
+                                            {`(${String(i + 1).padStart(2, '0')})`}
+                                        </span>
+                                    </Component>
+                                );
+                            })}
+                        </div>
                     </motion.div>
                 )}
             </AnimatePresence>
