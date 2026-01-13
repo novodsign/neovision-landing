@@ -92,10 +92,12 @@ export default function Navbar() {
                 onClick={() => setIsMenuOpen(false)}
                 style={{
                     zIndex: 101,
-                    mixBlendMode: 'difference' // Apply blend mode ONLY to logo
+                    mixBlendMode: 'difference', // Apply blend mode ONLY to logo
+                    display: 'flex',
+                    alignItems: 'center'
                 }}
             >
-                <img src={logo} alt="NeoVision" style={{ height: '30px', width: 'auto', display: 'block' }} />
+                <img src={logo} alt="NeoVision" style={{ width: '150px', height: 'auto', display: 'block' }} />
             </Link>
 
             {/* Desktop Menu */}
