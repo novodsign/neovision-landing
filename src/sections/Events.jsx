@@ -162,7 +162,7 @@ export const Events = () => {
                             </Link>
                         )}
                     </div>
-                </motion.div>
+                </div>
 
                 {loading && events.length === 0 && (
                     <div style={{
