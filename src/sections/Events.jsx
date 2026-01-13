@@ -120,14 +120,15 @@ export const Events = () => {
                     gap: '1rem'
                 }}
             >
-                <h2 style={{
-                    fontSize: 'clamp(2rem, 5vw, 4rem)',
-                    fontFamily: 'var(--font-header)',
-                    margin: 0
-                }}>
-                    {hasUpcoming ? 'БЛИЖАЙШИЕ СОБЫТИЯ' : 'ПОСЛЕДНИЕ СОБЫТИЯ'}
-                </h2>
-                <div style={{ display: 'flex', alignItems: 'baseline', gap: '2rem', marginLeft: 'auto' }}>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                    <h2 style={{
+                        fontSize: 'clamp(2rem, 5vw, 4rem)',
+                        fontFamily: 'var(--font-header)',
+                        margin: 0,
+                        lineHeight: 1
+                    }}>
+                        {hasUpcoming ? 'БЛИЖАЙШИЕ СОБЫТИЯ' : 'ПОСЛЕДНИЕ СОБЫТИЯ'}
+                    </h2>
                     {!hasUpcoming && (
                         <span style={{
                             fontFamily: 'var(--font-body)',
@@ -137,6 +138,8 @@ export const Events = () => {
                             Нет запланированных событий
                         </span>
                     )}
+                </div>
+                <div style={{ marginLeft: 'auto', paddingBottom: '0.5rem' }}>
                     {totalEvents > 4 && (
                         <Link
                             to="/events"
