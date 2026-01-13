@@ -103,7 +103,7 @@ export default function Navbar() {
                     alignItems: 'center'
                 }}
             >
-                <img src={logo} alt="NeoVision" style={{ height: '16px', width: 'auto', display: 'block' }} />
+                <img src={logo} alt="NeoVision" style={{ height: '40px', width: 'auto', display: 'block' }} />
             </Link>
 
             {/* Desktop Menu */}
