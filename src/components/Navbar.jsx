@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
+import logo from '../assets/logo.png';
 
 const NavItem = ({ href, to, children, onClick }) => {
     const Component = to ? Link : 'a';
@@ -90,15 +91,11 @@ export default function Navbar() {
                 to="/"
                 onClick={() => setIsMenuOpen(false)}
                 style={{
-                    fontWeight: '700',
-                    textTransform: 'uppercase',
-                    textDecoration: 'none',
-                    color: 'inherit',
                     zIndex: 101,
                     mixBlendMode: 'difference' // Apply blend mode ONLY to logo
                 }}
             >
-                NeoVision
+                <img src={logo} alt="NeoVision" style={{ height: '30px', width: 'auto', display: 'block' }} />
             </Link>
 
             {/* Desktop Menu */}
