@@ -1,5 +1,6 @@
 import React from 'react';
 import { useLocation, useNavigate, Link } from 'react-router-dom';
+import logo from '../assets/logo.png';
 
 export const Footer = () => {
     const location = useLocation();
@@ -28,7 +29,10 @@ export const Footer = () => {
             marginTop: '4rem',
             borderTop: '1px solid #333'
         }}>
-            <div style={{ opacity: 0.5 }}>&copy; 2025 NeoVision</div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                <img src={logo} alt="NeoVision" style={{ width: '100px', height: 'auto', filter: 'invert(1)' }} />
+                <div style={{ opacity: 0.5 }}>&copy; 2025 NeoVision</div>
+            </div>
             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '0.5rem' }}>
                 <div style={{ display: 'flex', gap: '1rem' }}>
                     <a href="#" onClick={(e) => e.preventDefault()} style={{ pointerEvents: 'none', color: '#666', textDecoration: 'none' }}>Instagram *</a>
