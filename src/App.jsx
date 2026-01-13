@@ -38,10 +38,6 @@ function App() {
       setIsFirstVisit(false);
     } else {
       setIsFirstVisit(true);
-      // We set the flag in sessionStorage INSIDE the Preloader when animation finishes, 
-      // or here? Better in Preloader so if they close early it resets? 
-      // Actually standard practice is usually immediate or on complete. 
-      // Let's rely on logic passing true/false.
     }
   }, []);
 
@@ -60,15 +56,6 @@ function App() {
         {isLoading && <Preloader onComplete={() => setIsLoading(false)} isFirstVisit={isFirstVisit} key="preloader" />}
       </AnimatePresence>
 
-      {!isLoading && (
-        <Routes>
-          {/* Helper for hash scrolling */}
-          <Route element={<><ScrollToHashElement /><LandingPage /></>} path="/" />
-
-          {/* Other routes don't strictly need hash scroll unless deep linking, but good practice to have global or per-page */}
-          {/* Actually, putting it outside Routes or as a wrapper is cleaner. Let's put it inside AnimatePresence or just before Routes. */}
-        </Routes>
-      )}
       <ScrollToHashElement />
 
       {!isLoading && (
