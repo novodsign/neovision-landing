@@ -75,7 +75,7 @@ export const Hero = () => {
                         }}>
                             NEOVISION
                         </h1>
-                        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                        <div className="hero-content-text" style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
                             <p style={{
                                 fontSize: '1.5rem',
                                 textTransform: 'uppercase',
@@ -168,15 +168,23 @@ export const Hero = () => {
                          padding-bottom: 4rem !important;
                          flex-direction: row; /* Keep buttons side-by-side or stack? */
                     }
-                    /* Stack buttons */
+                    /* Stack buttons but keep their natural size */
                     .hero-buttons {
                         flex-direction: column;
-                        align-items: stretch !important;
+                        align-items: flex-start !important; /* Start aligned, no stretch */
                         width: 100%;
                         margin-top: 2rem;
+                        gap: 1rem !important; /* Consistent gap */
                     }
+                    /* Ensure buttons are NOT full width */
                     .hero-buttons > * {
-                        width: 100% !important;
+                        width: auto !important; 
+                        min-width: 200px; /* Optional minimum width for touch targets */
+                        display: inline-flex !important;
+                    }
+                    /* Add spacing to label text */
+                    .hero-content-text {
+                        margin-top: 1.5rem !important; /* More breathing room */
                     }
                 }
             `}</style>
