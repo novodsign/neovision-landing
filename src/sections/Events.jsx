@@ -148,7 +148,8 @@ export const Events = () => {
                                 letterSpacing: '0.1em',
                                 borderBottom: '1px solid #444',
                                 paddingBottom: '2px',
-                                transition: 'color 0.3s, border-color 0.3s'
+                                transition: 'color 0.3s, border-color 0.3s',
+                                whiteSpace: 'nowrap'
                             }}
                             onMouseOver={(e) => {
                                 e.target.style.color = '#fff';

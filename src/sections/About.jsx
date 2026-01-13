@@ -41,7 +41,7 @@ export const About = () => {
 
             <div className="about-grid">
                 <div>
-                    <h2 style={{ fontSize: '3rem', marginBottom: '2rem' }}>О нас</h2>
+                    <h2 style={{ fontSize: 'clamp(2rem, 5vw, 4rem)', marginBottom: '2rem' }}>О нас</h2>
                     <p style={{ fontSize: '1.5rem', opacity: 0.9, marginBottom: '1.5rem' }}>
                         NeoVision — творческое объединение артистов, продвигающих тёмное звучание электронной музыки.
                     </p>
