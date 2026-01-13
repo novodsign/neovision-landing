@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import Navbar from '../components/Navbar';
 import { Footer } from '../sections/Footer';
@@ -26,7 +27,19 @@ export const GalleryPage = () => {
         <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
             <Navbar />
 
-            <main style={{ flex: 1, paddingTop: '120px', paddingBottom: '80px' }} className="container">
+            <main style={{ flex: 1, paddingTop: '140px', paddingBottom: '80px' }} className="container">
+                {/* Back Link */}
+                <motion.div
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.5 }}
+                    style={{ marginBottom: '40px' }}
+                >
+                    <Link to="/" style={{ color: '#888', textDecoration: 'none', fontSize: '0.9rem', letterSpacing: '0.05em' }}>
+                        &larr; НА ГЛАВНУЮ
+                    </Link>
+                </motion.div>
+
                 <motion.div
                     initial={{ opacity: 0, y: 50 }}
                     animate={{ opacity: 1, y: 0 }}

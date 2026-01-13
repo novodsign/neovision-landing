@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import Navbar from '../components/Navbar';
 import { Footer } from '../sections/Footer';
@@ -104,6 +104,7 @@ function transformEvent(apiEvent) {
 
 export const EventPage = () => {
     const { id } = useParams();
+    const navigate = useNavigate(); // Hook for smart navigation
     const [event, setEvent] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -211,9 +212,25 @@ export const EventPage = () => {
                     transition={{ duration: 0.5 }}
                     style={{ marginBottom: '40px' }}
                 >
-                    <Link to="/" style={{ color: '#888', textDecoration: 'none', fontSize: '0.9rem', letterSpacing: '0.05em' }}>
+                    <button
+                        onClick={() => navigate(-1)}
+                        style={{
+                            color: '#888',
+                            textDecoration: 'none',
+                            fontSize: '0.9rem',
+                            letterSpacing: '0.05em',
+                            background: 'transparent',
+                            border: 'none',
+                            padding: 0,
+                            cursor: 'pointer',
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '0.5rem',
+                            fontFamily: 'inherit'
+                        }}
+                    >
                         &larr; НАЗАД
-                    </Link>
+                    </button>
                 </motion.div>
 
                 {/* Content Grid */}

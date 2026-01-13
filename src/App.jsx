@@ -14,6 +14,7 @@ import Preloader from './components/Preloader';
 import { EventPage } from './pages/EventPage';
 import { EventsArchivePage } from './pages/EventsArchivePage';
 import { ShortUrlRedirect } from './components/ShortUrlRedirect';
+import ScrollToHashElement from './components/ScrollToHashElement';
 
 const LandingPage = () => (
   <>
@@ -58,6 +59,17 @@ function App() {
       <AnimatePresence mode="wait">
         {isLoading && <Preloader onComplete={() => setIsLoading(false)} isFirstVisit={isFirstVisit} key="preloader" />}
       </AnimatePresence>
+
+      {!isLoading && (
+        <Routes>
+          {/* Helper for hash scrolling */}
+          <Route element={<><ScrollToHashElement /><LandingPage /></>} path="/" />
+
+          {/* Other routes don't strictly need hash scroll unless deep linking, but good practice to have global or per-page */}
+          {/* Actually, putting it outside Routes or as a wrapper is cleaner. Let's put it inside AnimatePresence or just before Routes. */}
+        </Routes>
+      )}
+      <ScrollToHashElement />
 
       {!isLoading && (
         <Routes>

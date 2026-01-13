@@ -38,9 +38,7 @@ export const EventsArchivePage = () => {
     const [totalEvents, setTotalEvents] = useState(0);
     const navigate = useNavigate();
 
-    useEffect(() => {
-        window.scrollTo(0, 0);
-    }, []);
+
 
     useEffect(() => {
         let mounted = true;

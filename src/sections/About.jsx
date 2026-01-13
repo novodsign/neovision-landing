@@ -20,7 +20,26 @@ export const About = () => {
 
     return (
         <section id="about" className="container" style={{ padding: '6rem 4vw', position: 'relative' }}>
-            <div style={{ display: 'grid', gridTemplateColumns: 'minmax(300px, 2fr) 1fr', gap: '4rem', alignItems: 'start' }}>
+            <style>{`
+                .about-grid {
+                    display: grid;
+                    grid-template-columns: minmax(300px, 2fr) 1fr;
+                    gap: 4rem;
+                    align-items: start;
+                }
+                @media (max-width: 900px) {
+                    .about-grid {
+                        grid-template-columns: 1fr;
+                        gap: 3rem;
+                    }
+                    .about-player-container {
+                        align-items: flex-start !important;
+                        width: 100%;
+                    }
+                }
+            `}</style>
+
+            <div className="about-grid">
                 <div>
                     <h2 style={{ fontSize: '3rem', marginBottom: '2rem' }}>О нас</h2>
                     <p style={{ fontSize: '1.5rem', opacity: 0.9, marginBottom: '1.5rem' }}>
@@ -31,17 +50,17 @@ export const About = () => {
                     </p>
                 </div>
 
-                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', justifyContent: 'center', height: '100%', gap: '1rem' }}>
+                <div className="about-player-container" style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', justifyContent: 'center', height: '100%', gap: '1rem' }}>
                     <audio ref={audioRef} src={ambientTrack} loop />
 
                     <motion.button
                         onClick={togglePlay}
-                        whileHover={{ backgroundColor: 'rgba(255,255,255,0.05)' }}
+                        whileHover={{ scale: 1.02 }}
                         whileTap={{ scale: 0.98 }}
                         style={{
-                            background: 'rgba(255,255,255,0.02)',
-                            border: '1px solid rgba(255,255,255,0.2)',
-                            borderRadius: '0px', // Sharp corners
+                            background: '#FFFFFF', // High contrast white background
+                            border: '1px solid #FFFFFF',
+                            borderRadius: '0px',
                             padding: '1.5rem',
                             display: 'flex',
                             alignItems: 'center',
@@ -49,36 +68,45 @@ export const About = () => {
                             cursor: 'pointer',
                             width: 'auto',
                             minWidth: '280px',
-                            backdropFilter: 'blur(5px)',
-                            position: 'relative'
+                            maxWidth: '100%', /* Ensure it fits on mobile */
+                            position: 'relative',
+                            boxShadow: '0 4px 20px rgba(0,0,0,0.3)' // Added shadow for lift
                         }}
                     >
                         <div style={{
                             width: '40px',
                             height: '40px',
-                            border: '1px solid #fff', // Outline instead of solid circle
+                            border: '1px solid #000', // Black border
                             background: 'transparent',
                             display: 'flex',
                             alignItems: 'center',
                             justifyContent: 'center',
-                            color: '#fff'
+                            color: '#000', // Black icon
+                            flexShrink: 0
                         }}>
                             {isPlaying ? (
-                                <div style={{ width: '10px', height: '10px', background: '#fff' }}></div>
+                                <div style={{ width: '10px', height: '10px', background: '#000' }}></div>
                             ) : (
                                 <div style={{
                                     width: 0,
                                     height: 0,
                                     borderTop: '5px solid transparent',
                                     borderBottom: '5px solid transparent',
-                                    borderLeft: '8px solid #fff',
+                                    borderLeft: '8px solid #000', // Black triangle
                                     marginLeft: '2px'
                                 }}></div>
                             )}
                         </div>
 
                         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: '4px' }}>
-                            <span style={{ fontSize: '0.9rem', letterSpacing: '0.1em', fontFamily: 'var(--font-header)', textTransform: 'uppercase' }}>
+                            <span style={{
+                                fontSize: '0.9rem',
+                                letterSpacing: '0.1em',
+                                fontFamily: 'var(--font-header)',
+                                textTransform: 'uppercase',
+                                color: '#000', // Black text
+                                fontWeight: '700'
+                            }}>
                                 NEOVISION AUDIO
                             </span>
                             <div style={{ display: 'flex', gap: '3px', height: '16px', alignItems: 'center' }}>
@@ -95,7 +123,7 @@ export const About = () => {
                                             delay: i * 0.05,
                                             ease: "easeInOut"
                                         }}
-                                        style={{ width: '2px', backgroundColor: '#fff' }}
+                                        style={{ width: '2px', backgroundColor: '#000' }} // Black visualizer bars
                                     />
                                 ))}
                             </div>

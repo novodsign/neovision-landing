@@ -2,7 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { MagneticButton } from '../components/MagneticButton';
 import logo from '../assets/logo.png';
-import heroBg from '../assets/hero_bg.jpg';
+
 
 
 export const Hero = () => {
@@ -10,20 +10,39 @@ export const Hero = () => {
         <section className="hero" style={{
             height: '100vh',
             display: 'flex',
-            flexDirection: 'column', // Mobile first (stacked)
+            flexDirection: 'column',
             justifyContent: 'center',
             position: 'relative',
             overflow: 'hidden',
-            backgroundImage: `url(${heroBg})`,
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
         }}>
+            {/* Video Background */}
+            <video
+                autoPlay
+                loop
+                muted
+                playsInline
+                style={{
+                    position: 'absolute',
+                    top: '50%',
+                    left: '50%',
+                    width: '100vw',
+                    height: '100vh',
+                    minWidth: '100%',
+                    minHeight: '100%',
+                    objectFit: 'cover',
+                    transform: 'translate(-50%, -50%)',
+                    zIndex: 0
+                }}
+            >
+                <source src="/assets/hero_video.mp4?v=2" type="video/mp4" />
+            </video>
+
             {/* Dark overlay */}
             <div style={{
                 position: 'absolute',
                 top: 0, left: 0, right: 0, bottom: 0,
-                background: 'rgba(0,0,0,0.4)',
-                zIndex: 0
+                background: 'rgba(0,0,0,0.5)', // Slightly darker for better text contrast over video
+                zIndex: 1
             }}></div>
 
             {/* Content Container - Grid for Desktop */}
@@ -66,19 +85,29 @@ export const Hero = () => {
                         }}>
                             Лейбл и&nbsp;Промо
                         </p>
-                        <p style={{
-                            fontSize: '1.2rem',
-                            opacity: 0.8,
-                            maxWidth: '450px',
-                            lineHeight: 1.6,
-                            fontWeight: 400
                         }}>
-                            Творческое объединение артистов, продвигающих тёмное звучание электронной музыки.
-                        </p>
+                        Лейбл и&nbsp;Промо
+                    </p>
+
+                    <p style={{
+                        fontSize: '1.1rem',
+                        maxWidth: '500px',
+                        opacity: 0.8,
+                        marginBottom: '2rem',
+                        mixBlendMode: 'difference'
+                    }}>
+                        Экспериментальное пространство визуального и звукового искусства.
+                    </p>
+
+                    {/* Mobile Only Buttons Container (Hidden on Desktop via CSS) */}
+                    <div className="hero-buttons mobile-only" style={{ display: 'none' }}>
+                        {/* Will be shown by media query if we didn't use inline display none. 
+                             Actually, let's just use the same container and adjust css.
+                         */}
                     </div>
                 </motion.div>
 
-                {/* Right Side: Buttons */}
+                {/* Right Side: Buttons (Moves to bottom on mobile) */}
                 <motion.div
                     initial={{ opacity: 0, x: 50 }}
                     animate={{ opacity: 1, x: 0 }}
@@ -87,24 +116,18 @@ export const Hero = () => {
                         display: 'flex',
                         flexDirection: 'column',
                         height: '100%',
-                        justifyContent: 'flex-end', // Push to bottom (Where red rectangles likely are)
-                        paddingBottom: '10vh', // Add some spacing from the very bottom
+                        justifyContent: 'flex-end',
+                        paddingBottom: '10vh',
                         alignItems: 'flex-end'
                     }}
+                    className="hero-buttons-container"
                 >
-                    {/* Separate Static Buttons -> Converted to Magnetic Buttons */}
-                    <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
-                        <MagneticButton
-                            href="#events"
-                            variant="primary"
-                        >
+                    <div className="hero-buttons" style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
+                        <MagneticButton href="#events" variant="primary">
                             Билеты
                         </MagneticButton>
 
-                        <MagneticButton
-                            href="#contact"
-                            variant="secondary"
-                        >
+                        <MagneticButton href="#contact" variant="secondary">
                             Связаться
                         </MagneticButton>
                     </div>
@@ -127,6 +150,14 @@ export const Hero = () => {
                         /* Removed forced center alignment for cleaner text block */
                         padding-top: 100px !important;
                         justify-items: start; /* Align grid items to start */
+                        text-align: left;
+                        /* Ensure content is scrollable if it disobeys 100vh on small screens */
+                        height: auto !important; 
+                        padding-bottom: 50px;
+                    }
+                    /* Adjust title size for mobile */
+                    .hero h1 {
+                        font-size: clamp(2.5rem, 10vw, 4rem) !important;
                     }
                     .hero .container > div {
                         /* Keep left alignment from inline styles */
@@ -138,6 +169,16 @@ export const Hero = () => {
                          justify-content: flex-start !important;
                          padding-bottom: 4rem !important;
                          flex-direction: row; /* Keep buttons side-by-side or stack? */
+                    }
+                    /* Stack buttons */
+                    .hero-buttons {
+                        flex-direction: column;
+                        align-items: stretch !important;
+                        width: 100%;
+                        margin-top: 2rem;
+                    }
+                    .hero-buttons > * {
+                        width: 100% !important;
                     }
                 }
             `}</style>
