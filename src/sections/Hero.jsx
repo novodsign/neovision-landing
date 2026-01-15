@@ -2,6 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { MagneticButton } from '../components/MagneticButton';
 import logo from '../assets/logo.png';
+import heroBg from '../assets/hero_bg.jpg';
 
 
 
@@ -21,6 +22,9 @@ export const Hero = () => {
                 loop
                 muted
                 playsInline
+                preload="auto"
+                poster={heroBg}
+                fetchpriority="high"
                 style={{
                     position: 'absolute',
                     top: '50%',
@@ -71,7 +75,8 @@ export const Hero = () => {
                             letterSpacing: '-0.02em',
                             color: '#eaeaea', // Off-white
                             lineHeight: 1,
-                            marginBottom: '0.2rem' // Reduced gap to Subtitle
+                            marginBottom: '0.2rem', // Reduced gap to Subtitle
+                            marginLeft: '-0.06em' // Optical alignment correction
                         }}>
                             NEOVISION
                         </h1>

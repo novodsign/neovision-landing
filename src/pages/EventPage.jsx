@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, Link, useNavigate } from 'react-router-dom';
+import { useParams, Link, useNavigate, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import Navbar from '../components/Navbar';
 import { Footer } from '../sections/Footer';
@@ -104,7 +104,8 @@ function transformEvent(apiEvent) {
 
 export const EventPage = () => {
     const { id } = useParams();
-    const navigate = useNavigate(); // Hook for smart navigation
+    const navigate = useNavigate();
+    const location = useLocation();
     const [event, setEvent] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -154,30 +155,47 @@ export const EventPage = () => {
         };
     }, [id]);
 
+    const handleBack = () => {
+        const from = location.state?.from;
+
+        if (from === 'home') {
+            // Navigate to home and try to scroll to events
+            navigate('/');
+            setTimeout(() => {
+                const eventsSection = document.getElementById('events');
+                if (eventsSection) {
+                    eventsSection.scrollIntoView({ behavior: 'smooth' });
+                }
+            }, 100);
+        } else if (from === 'archive') {
+            navigate('/events');
+        } else {
+            navigate(-1);
+        }
+    };
+
     // Loading state
     if (loading) {
         return (
             <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', background: '#050505', color: '#fff' }}>
                 <Navbar />
                 <div className="container" style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                    <div style={{ textAlign: 'center' }}>
-                        <div style={{
-                            width: '40px',
-                            height: '40px',
-                            border: '2px solid #333',
-                            borderTopColor: '#fff',
-                            borderRadius: '50%',
-                            animation: 'spin 1s linear infinite',
-                            margin: '0 auto 1rem'
-                        }} />
-                        <p style={{ color: '#666' }}>Загрузка...</p>
-                    </div>
-                    <style>{`
-                        @keyframes spin {
-                            to { transform: rotate(360deg); }
-                        }
-                    `}</style>
+                    <div style={{
+                        width: '40px',
+                        height: '40px',
+                        border: '2px solid #333',
+                        borderTopColor: '#fff',
+                        borderRadius: '50%',
+                        animation: 'spin 1s linear infinite',
+                        margin: '0 auto 1rem'
+                    }} />
+                    <p style={{ color: '#666' }}>Загрузка...</p>
                 </div>
+                <style>{`
+                    @keyframes spin {
+                        to { transform: rotate(360deg); }
+                    }
+                `}</style>
                 <Footer />
             </div>
         );
@@ -213,7 +231,7 @@ export const EventPage = () => {
                     style={{ marginBottom: '40px' }}
                 >
                     <button
-                        onClick={() => navigate(-1)}
+                        onClick={handleBack}
                         style={{
                             color: '#888',
                             textDecoration: 'none',

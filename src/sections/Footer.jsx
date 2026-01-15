@@ -1,6 +1,6 @@
 import React from 'react';
 import { useLocation, useNavigate, Link } from 'react-router-dom';
-import logo from '../assets/logo_vector.svg';
+import logo from '../assets/logo_v3.svg';
 
 export const Footer = () => {
     const location = useLocation();
@@ -36,9 +36,10 @@ export const Footer = () => {
                 alignItems: 'flex-start' // Ensure left alignment
             }}>
                 <img src={logo} alt="NeoVision" style={{
-                    width: 'clamp(150px, 40vw, 240px)', // Responsive width
-                    height: 'auto',
-                    opacity: 0.5
+                    height: '20px', // Matches visual weight of text links (neat & small)
+                    width: 'auto',
+                    opacity: 0.5,
+                    display: 'block'
                 }} />
                 <div style={{ opacity: 0.5 }}>&copy; 2025 NeoVision</div>
             </div>

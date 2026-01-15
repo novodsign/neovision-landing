@@ -229,7 +229,7 @@ export const EventsArchivePage = () => {
                                     initial={{ opacity: 0, y: 20 }}
                                     animate={{ opacity: 1, y: 0 }}
                                     transition={{ delay: i * 0.05 }}
-                                    onClick={() => navigate(getEventUrl(event))}
+                                    onClick={() => navigate(getEventUrl(event), { state: { from: 'archive' } })}
                                     style={{
                                         display: 'flex',
                                         flexDirection: 'column',

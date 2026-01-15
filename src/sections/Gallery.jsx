@@ -16,9 +16,9 @@ const images = [img1, img2, img3, img4, img5, img6, img7, img8];
 
 export const Gallery = () => {
     return (
-        <section className="container" style={{ padding: '4rem 4vw' }}>
+        <section className="container" style={{ padding: '6rem 4vw' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '3rem' }}>
-                <h2 style={{ fontSize: '3rem', margin: 0 }}>Галерея</h2>
+                <h2 style={{ fontSize: 'clamp(3rem, 5vw, 4rem)', margin: 0 }}>Галерея</h2>
                 <Link to="/gallery" style={{
                     fontSize: '1rem',
                     textDecoration: 'underline',

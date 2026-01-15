@@ -5,7 +5,7 @@ import Navbar from './components/Navbar';
 import { Hero } from './sections/Hero';
 import { About } from './sections/About';
 import { Gallery } from './sections/Gallery';
-import { Releases } from './sections/Releases';
+import { ReleasesList as Releases } from './sections/Releases';
 import { Events } from './sections/Events';
 import { Footer } from './sections/Footer';
 import { GalleryPage } from './pages/GalleryPage';

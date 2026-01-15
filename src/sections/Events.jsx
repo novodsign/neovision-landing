@@ -198,7 +198,7 @@ export const Events = () => {
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ delay: i * 0.1 }}
-                        onClick={() => navigate(evt.link)}
+                        onClick={() => navigate(evt.link, { state: { from: 'home' } })}
                         style={{
                             display: 'flex',
                             flexDirection: 'column',

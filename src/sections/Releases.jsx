@@ -1,90 +1,246 @@
-import React from 'react';
+import React, { useState, useRef, useEffect } from 'react';
+import { MagneticButton } from '../components/MagneticButton';
 
+const releases = [
+    {
+        title: "LONELY",
+        artist: "BLVCK CVRNVGE",
+        year: "2024",
+        yandexLink: "https://music.yandex.ru/album/33627812/track/131983269",
+        yandexEmbed: "https://music.yandex.ru/iframe/album/33627812/track/131983269",
+        vkLink: "https://vk.com/blvckcvrnvge",
+        audioSrc: "/audio/lonely.mp3"
+    },
+    {
+        title: "Ночь",
+        artist: "Asenssia",
+        year: "2024",
+        yandexLink: "https://music.yandex.ru/album/21241332/track/100949287",
+        yandexEmbed: "https://music.yandex.ru/iframe/album/21241332/track/100949287",
+        vkLink: "https://vk.com/asenssia",
+        audioSrc: "/audio/noch.mp3"
+    },
+    {
+        title: "Moon",
+        artist: "BLVCK CVRNVGE",
+        year: "2024",
+        yandexLink: "https://music.yandex.ru/album/33916709/track/132687440",
+        yandexEmbed: "https://music.yandex.ru/iframe/album/33916709/track/132687440",
+        vkLink: "https://vk.com/blvckcvrnvge",
+        audioSrc: "/audio/moon.mp3"
+    }
+];
 
+export const ReleasesList = () => {
+    const [playingIndex, setPlayingIndex] = useState(null);
+    const audioRef = useRef(new Audio());
 
-export const Releases = () => {
+    useEffect(() => {
+        // Cleanup on unmount
+        return () => {
+            audioRef.current.pause();
+            audioRef.current.src = "";
+        };
+    }, []);
+
+    const handlePlayPause = (index, src) => {
+        if (playingIndex === index) {
+            // Toggle pause
+            if (!audioRef.current.paused) {
+                audioRef.current.pause();
+                setPlayingIndex(null); // Show play icon
+            } else {
+                audioRef.current.play().catch(e => console.log("Audio play failed (file might be missing):", e));
+                setPlayingIndex(index); // Show pause icon
+            }
+        } else {
+            // Play new track
+            audioRef.current.pause();
+            audioRef.current.src = src;
+            audioRef.current.load();
+            audioRef.current.play().catch(e => console.log("Audio play failed (file might be missing):", e));
+            setPlayingIndex(index);
+
+            // Auto reset when ended
+            audioRef.current.onended = () => setPlayingIndex(null);
+        }
+    };
+
     return (
-        <section id="releases" className="container" style={{ padding: '4rem 4vw' }}>
-            <h2 style={{ fontSize: '3rem', marginBottom: '2rem' }}>Релизы</h2>
-            <div style={{
-                width: '100%',
-                minHeight: '300px',
-                borderTop: '1px solid #333',
-                paddingTop: '3rem',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center'
-            }}>
-                <div style={{
-                    width: '100%',
-                    maxWidth: '600px',
-                    padding: '3rem 2rem',
-                    background: 'linear-gradient(145deg, #111, #0a0a0a)',
-                    border: '1px solid #222',
-                    borderRadius: '12px',
-                    textAlign: 'center',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    gap: '2rem'
-                }}>
-                    <div>
-                        <h3 style={{ fontSize: '2rem', marginBottom: '0.5rem', fontFamily: 'var(--font-header)' }}>BLVCK CVRNVGE</h3>
-                        <p style={{ color: '#888', margin: 0 }}>Слушать последние релизы</p>
-                    </div>
-
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', width: '100%', alignItems: 'center' }}>
-                        <a
-                            href="https://music.yandex.ru/artist/14589945"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            style={{
-                                width: '100%',
-                                maxWidth: '300px',
-                                padding: '1rem',
-                                backgroundColor: '#fc0',
-                                color: '#000',
-                                textDecoration: 'none',
-                                fontWeight: 'bold',
-                                borderRadius: '30px',
-                                display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                                gap: '0.5rem',
-                                transition: 'transform 0.2s'
-                            }}
-                            onMouseOver={(e) => e.target.style.transform = 'scale(1.02)'}
-                            onMouseOut={(e) => e.target.style.transform = 'scale(1)'}
-                        >
-                            <span style={{ fontSize: '1.2rem' }}>PLAY ON YANDEX MUSIC</span>
-                        </a>
-
-                        <a
-                            href="https://vk.com/music/artist/blvck_cvrnvge"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            style={{
-                                width: '100%',
-                                maxWidth: '300px',
-                                padding: '1rem',
-                                backgroundColor: '#0077FF',
-                                color: '#fff',
-                                textDecoration: 'none',
-                                fontWeight: 'bold',
-                                borderRadius: '30px',
-                                display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                                gap: '0.5rem',
-                                transition: 'transform 0.2s'
-                            }}
-                            onMouseOver={(e) => e.target.style.transform = 'scale(1.02)'}
-                            onMouseOut={(e) => e.target.style.transform = 'scale(1)'}
-                        >
-                            <span style={{ fontSize: '1.2rem' }}>PLAY ON VK MUSIC</span>
-                        </a>
-                    </div>
-                </div>
+        <section className="container" style={{ padding: '6rem 4vw' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '3rem' }}>
+                <h2 style={{
+                    fontSize: 'clamp(3rem, 5vw, 4rem)',
+                    margin: 0,
+                    fontFamily: 'var(--font-header)',
+                    textTransform: 'uppercase',
+                    letterSpacing: '-0.02em'
+                }}>Релизы</h2>
             </div>
+            <div style={{ display: 'flex', flexDirection: 'column' }}>
+                {releases.map((release, index) => (
+                    <div
+                        key={index}
+                        className="release-item"
+                        style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'space-between',
+                            width: '100%',
+                            padding: '2rem 0',
+                            borderBottom: '1px solid var(--color-border)',
+                            position: 'relative'
+                        }}
+                    >
+                        {/* Left Side: Play Button + Title */}
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', marginRight: 'auto' }}>
+                            {/* Play Button */}
+                            <button
+                                onClick={() => handlePlayPause(index, release.audioSrc)}
+                                style={{
+                                    width: '34px', // Reduced from 50px to match text height
+                                    height: '34px',
+                                    borderRadius: '50%',
+                                    border: '1px solid var(--color-border)', // Subtle border by default
+                                    backgroundColor: 'transparent',
+                                    color: 'var(--color-text)',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    cursor: 'pointer',
+                                    transition: 'all 0.3s',
+                                    flexShrink: 0,
+                                    opacity: 0.8 // Slightly muted
+                                }}
+                                className="play-btn"
+                                aria-label={playingIndex === index ? "Pause" : "Play"}
+                            >
+                                {playingIndex === index ? (
+                                    // Pause Icon
+                                    <svg width="10" height="12" viewBox="0 0 14 16" fill="currentColor">
+                                        <rect width="4" height="16" rx="1" />
+                                        <rect x="10" width="4" height="16" rx="1" />
+                                    </svg>
+                                ) : (
+                                    // Play Icon
+                                    <svg width="10" height="12" viewBox="0 0 14 16" fill="currentColor" style={{ marginLeft: '2px' }}>
+                                        <path d="M14 8L0 16V0L14 8Z" />
+                                    </svg>
+                                )}
+                            </button>
+
+                            {/* Title */}
+                            <span style={{
+                                fontSize: '2.2rem',
+                                fontWeight: '600',
+                                fontFamily: 'var(--font-header)',
+                                textTransform: 'uppercase',
+                                lineHeight: 1,
+                                letterSpacing: '-0.02em',
+                                cursor: 'default'
+                            }} className="release-title">
+                                {release.title}
+                            </span>
+                        </div>
+
+                        {/* Right Side Group: Year + Buttons */}
+                        <div style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '3rem',
+                            flexShrink: 0
+                        }}>
+                            <span style={{
+                                fontSize: '1.2rem',
+                                fontFamily: 'var(--font-body)',
+                                color: 'var(--color-text-muted)',
+                                flexShrink: 0,
+                                letterSpacing: '-0.02em'
+                            }}>
+                                {release.year}
+                            </span>
+
+                            <div style={{ display: 'flex', gap: '0.8rem' }}>
+                                <MagneticButton
+                                    href={release.yandexLink}
+                                    variant="secondary"
+                                    style={{
+                                        minWidth: 'auto',
+                                        padding: '0.6rem 1.2rem',
+                                        fontSize: '0.85rem',
+                                        borderRadius: '50px',
+                                        display: 'flex',
+                                        gap: '0.4rem',
+                                        alignItems: 'center'
+                                    }}
+                                >
+                                    Yandex
+                                </MagneticButton>
+
+                                <MagneticButton
+                                    href={release.vkLink}
+                                    variant="secondary"
+                                    style={{
+                                        minWidth: 'auto',
+                                        padding: '0.6rem 1.2rem',
+                                        fontSize: '0.85rem',
+                                        borderRadius: '50px',
+                                        display: 'flex',
+                                        gap: '0.4rem',
+                                        alignItems: 'center'
+                                    }}
+                                >
+                                    VK
+                                </MagneticButton>
+                            </div>
+                        </div>
+                    </div>
+                ))}
+            </div>
+
+            <style>{`
+                .play-btn:hover {
+                    background-color: transparent; /* Keep transparent */
+                    border-color: var(--color-text) !important; /* Brighten border to white */
+                    opacity: 1 !important;
+                    transform: scale(1.1);
+                }
+                .release-item {
+                    transition: opacity 0.3s;
+                }
+                .release-item:hover {
+                    opacity: 1;
+                }
+                /* Optional: dim non-hovered items slightly for focus effect, valid for lists */
+                .release-item:hover .release-title {
+                     opacity: 1;
+                }
+
+                @media (max-width: 768px) {
+                    .release-item {
+                        flex-direction: column;
+                        align-items: flex-start !important;
+                        gap: 1rem !important;
+                    }
+                    .release-title {
+                        font-size: 1.8rem !important;
+                    }
+                    div[style*="margin-right: auto"] {
+                         width: 100%;
+                         justify-content: flex-start;
+                         gap: 1rem !important;
+                    }
+                     /* Make play button same size on mobile or slightly adjusted if needed */
+                    .play-btn {
+                       /* Keep consistent 34px or let it inherit */
+                    }
+                    div[style*="flex-shrink: 0"] {
+                         width: 100%;
+                         justify-content: space-between;
+                         gap: 0 !important; /* Reset big gap */
+                    }
+                }
+            `}</style>
         </section>
     );
 };
